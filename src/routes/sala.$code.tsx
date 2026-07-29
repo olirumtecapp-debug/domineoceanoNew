@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+import { AdvantagePanel } from "@/components/game/AdvantagePanel";
 import { Board } from "@/components/game/Board";
 import { OceanScene } from "@/components/ocean/OceanScene";
 import { FullscreenButton } from "@/components/ocean/DeviceButtons";
