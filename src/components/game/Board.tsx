@@ -3,7 +3,7 @@ import { Trees, Mountain, TowerControl, LifeBuoy, Factory } from "lucide-react";
 
 import { FxCanvas } from "@/components/game/FxCanvas";
 import { SHIP_SPRITES, MAP_IMAGES } from "@/game/assets";
-import { coordLabel, xy } from "@/game/engine";
+import { cellOpen, coordLabel, xy } from "@/game/engine";
 import type { CellKnowledge, MapKey, Ship, Terrain } from "@/game/types";
 import { cn } from "@/lib/utils";
 
@@ -126,7 +126,8 @@ export const Board = memo(function Board({
               const k = knowledge[i];
               const t = terrain[i];
               const own = shipCellMap.get(i);
-              const hitHere = k.shot && (k.result === "hit" || k.result === "sunk");
+              const damagedHere = k.shot && k.result === "damaged";
+              const hitHere = k.shot && (k.result === "hit" || k.result === "sunk" || k.result === "damaged");
               const missHere = k.shot && k.result === "miss";
               const sunkShip = own?.ship.sunk;
               const { x, y } = xy(size, i);
@@ -134,7 +135,7 @@ export const Board = memo(function Board({
                 <button
                   key={i}
                   type="button"
-                  disabled={disabled || k.shot || t !== "water"}
+                  disabled={disabled || !cellOpen(k) || t !== "water"}
                   onClick={() => onCell?.(i)}
                   onMouseEnter={() => setHover(i)}
                   onMouseLeave={() => setHover((h) => (h === i ? null : h))}
@@ -146,12 +147,13 @@ export const Board = memo(function Board({
                     (x + y) % 2 === 0 && "bg-[oklch(0.85_0.05_225_/_0.10)]",
                     t !== "water" && "bg-[oklch(0.35_0.03_120_/_0.45)]",
                     !disabled &&
-                      !k.shot &&
+                      cellOpen(k) &&
                       t === "water" &&
                       onCell &&
                       "cursor-crosshair hover:bg-primary/40 hover:ring-1 hover:ring-primary",
                     missHere && "bg-[oklch(0.24_0.04_240_/_0.80)]",
                     hitHere && "bg-destructive/75",
+                    damagedHere && "bg-gold/60 ring-1 ring-gold",
                     sunkShip && "bg-destructive/85",
                     k.revealedShip && !k.shot && "ring-1 ring-gold",
                     highlight.includes(i) && "ring-2 ring-accent",
@@ -171,7 +173,7 @@ export const Board = memo(function Board({
                   )}
                   {hitHere && (
                     <span className="absolute inset-0 z-20 flex items-center justify-center text-[10px] animate-od-rise">
-                      {sunkShip ? "☠" : "🔥"}
+                      {sunkShip ? "☠" : damagedHere ? "✷" : "🔥"}
                     </span>
                   )}
                   {k.revealed && !k.shot && !k.revealedShip && (
