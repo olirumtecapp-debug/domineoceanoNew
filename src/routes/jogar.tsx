@@ -104,8 +104,7 @@ function SetupPage() {
           </div>
         </section>
 
-        {true && (
-          <section className="mt-4 rounded-xl panel-metal p-4">
+        <section className="mt-4 rounded-xl panel-metal p-4">
             <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Nível do adversário</h2>
             <div className="mt-3 grid gap-2 sm:grid-cols-3">
               {DIFFICULTIES.map((d) => (
