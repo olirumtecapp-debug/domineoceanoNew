@@ -42,9 +42,11 @@ export const Board = memo(function Board({
   boardId,
   mapKey,
 }: Props) {
+  const [hover, setHover] = useState<number | null>(null);
   const shipCellMap = new Map<number, { ship: Ship; pos: number }>();
   ships?.forEach((s) => s.cells.forEach((c, pos) => shipCellMap.set(c, { ship: s, pos })));
   const pct = 100 / size;
+
 
   return (
     <div className="w-full">
