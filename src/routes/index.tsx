@@ -7,6 +7,7 @@ import { OceanScene } from "@/components/ocean/OceanScene";
 import { FullscreenButton, InstallButton } from "@/components/ocean/DeviceButtons";
 import { SupportButton } from "@/components/ocean/SupportButton";
 import { Button } from "@/components/ui/button";
+import { MAP_IMAGES } from "@/game/assets";
 import { audio } from "@/lib/audio";
 
 export const Route = createFileRoute("/")({
