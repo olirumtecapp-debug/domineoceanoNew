@@ -19,7 +19,7 @@ import { AdvantagePanel } from "@/components/game/AdvantagePanel";
 import { Board } from "@/components/game/Board";
 import { OceanScene } from "@/components/ocean/OceanScene";
 import { FullscreenButton } from "@/components/ocean/DeviceButtons";
-import { SupportButton } from "@/components/ocean/SupportButton";
+import { GameLink } from "@/components/ocean/GameLink";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -497,6 +497,10 @@ function RoomPage() {
               {room.code}
               <Copy className="h-4 w-4" />
             </button>
+            <p className="mt-4 text-xs text-muted-foreground">
+              Peça para o seu adversário abrir o endereço abaixo no computador ou no celular e digitar o código.
+            </p>
+            <GameLink className="mt-2 text-left" compact />
           </div>
         )}
 
@@ -674,7 +678,6 @@ function RoomPage() {
           </div>
         )}
       </div>
-      <SupportButton />
     </div>
   );
 }

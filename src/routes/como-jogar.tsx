@@ -3,6 +3,7 @@ import { Home, Smartphone, Monitor, Target, Radar, Ship, Trophy, Waves, Flame } 
 
 import { Logo } from "@/components/ocean/Logo";
 import { FullscreenButton, InstallButton } from "@/components/ocean/DeviceButtons";
+import { GameLink } from "@/components/ocean/GameLink";
 import { SupportButton } from "@/components/ocean/SupportButton";
 import { Button } from "@/components/ui/button";
 import { MAP_IMAGES, SHIP_SPRITES } from "@/game/assets";
@@ -34,9 +35,10 @@ function HowToPlay() {
           <Link to="/">
             <Logo compact />
           </Link>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <InstallButton />
             <FullscreenButton />
+            <SupportButton />
             <Button asChild variant="ghost" size="sm" className="gap-2">
               <Link to="/">
                 <Home className="h-4 w-4" /> Base
@@ -164,6 +166,11 @@ function HowToPlay() {
           <h2 className="flex items-center gap-2 text-lg font-bold">
             <Smartphone className="h-5 w-5 text-accent" /> Instalar no celular ou tablet
           </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Abra <strong>https://domineoceano.lovable.app</strong> no navegador do celular, tablet ou computador e
+            depois use o botão &quot;Instalar app&quot;.
+          </p>
+          <GameLink className="mt-3" label="Endereço do jogo" />
           <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
             <li>
               <strong>Android (Chrome, Edge ou Brave):</strong> toque em &quot;Instalar app&quot; nesta página; se não
@@ -202,7 +209,6 @@ function HowToPlay() {
           </p>
         </section>
       </div>
-      <SupportButton />
     </div>
   );
 }

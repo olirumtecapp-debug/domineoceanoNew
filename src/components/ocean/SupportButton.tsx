@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 const PIX_CODE =
   "00020101021126580014br.gov.bcb.pix0136ccc2fd5a-cc51-4626-ac9b-8010315042f55204000053039865802BR5924MURILO FERREIRA DA SILVA6009SAO PAULO622905251KYF6GJBG4K0TVYH7QKHP9TSD63042519";
 
-export function SupportButton({ className, variant = "floating" }: { className?: string; variant?: "floating" | "inline" }) {
+export function SupportButton({ className }: { className?: string }) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
@@ -40,22 +40,10 @@ export function SupportButton({ className, variant = "floating" }: { className?:
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {variant === "floating" ? (
-          <button
-            aria-label="Apoiar o projeto"
-            className={cn(
-              "fixed bottom-5 right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card/90 text-destructive shadow-lg backdrop-blur transition-transform hover:scale-110",
-              className,
-            )}
-          >
-            <Heart className="h-5 w-5 fill-current" />
-          </button>
-        ) : (
-          <Button variant="outline" size="sm" className={cn("gap-2", className)}>
-            <Heart className="h-4 w-4 fill-destructive text-destructive" />
-            Apoiar
-          </Button>
-        )}
+        <Button variant="outline" size="sm" className={cn("gap-2", className)}>
+          <Heart className="h-4 w-4 fill-destructive text-destructive" />
+          Apoiar
+        </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg">
         <DialogHeader>

@@ -43,11 +43,14 @@ function ProfilePage() {
           <Link to="/">
             <Logo compact />
           </Link>
-          <Button asChild variant="ghost" size="sm" className="gap-2">
-            <Link to="/">
-              <Home className="h-4 w-4" /> Base
-            </Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <SupportButton />
+            <Button asChild variant="ghost" size="sm" className="gap-2">
+              <Link to="/">
+                <Home className="h-4 w-4" /> Base
+              </Link>
+            </Button>
+          </div>
         </header>
 
         <div className="rounded-xl panel-metal p-5">
@@ -125,7 +128,6 @@ function ProfilePage() {
           <Link to="/jogar">Nova batalha</Link>
         </Button>
       </div>
-      <SupportButton />
     </div>
   );
 }
