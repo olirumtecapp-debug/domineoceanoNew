@@ -88,7 +88,7 @@ export const Board = memo(function Board({
                 key={r}
                 className={cn(
                   "flex items-center justify-center font-mono font-bold leading-none",
-                  hover !== null && xy(size, hover).y === r ? "text-accent" : "text-primary/60",
+                  hover !== null && xy(size, hover).y === r ? "text-accent" : "text-[oklch(0.9_0.05_225)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]",
                 )}
               >
                 {r + 1}
@@ -108,7 +108,7 @@ export const Board = memo(function Board({
                   key={c}
                   className={cn(
                     "flex items-center justify-center font-mono font-bold leading-none",
-                    hover !== null && xy(size, hover).x === c ? "text-accent" : "text-primary/60",
+                    hover !== null && xy(size, hover).x === c ? "text-accent" : "text-[oklch(0.9_0.05_225)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]",
                   )}
                 >
                   {String.fromCharCode(65 + c)}
