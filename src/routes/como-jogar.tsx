@@ -34,9 +34,10 @@ function HowToPlay() {
           <Link to="/">
             <Logo compact />
           </Link>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <InstallButton />
             <FullscreenButton />
+            <SupportButton />
             <Button asChild variant="ghost" size="sm" className="gap-2">
               <Link to="/">
                 <Home className="h-4 w-4" /> Base

@@ -46,11 +46,14 @@ function SetupPage() {
           <Link to="/">
             <Logo compact />
           </Link>
-          <Button asChild variant="ghost" size="sm" className="gap-2">
-            <Link to="/">
-              <Home className="h-4 w-4" /> Base
-            </Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <SupportButton />
+            <Button asChild variant="ghost" size="sm" className="gap-2">
+              <Link to="/">
+                <Home className="h-4 w-4" /> Base
+              </Link>
+            </Button>
+          </div>
         </header>
 
         <h1 className="text-3xl font-black uppercase tracking-tight">Preparar batalha</h1>
