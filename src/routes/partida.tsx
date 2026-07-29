@@ -81,6 +81,10 @@ const ABILITY_ICONS: Record<string, typeof Radar> = {
 
 type Phase = "placing" | "battle" | "over";
 
+function totalSections(p: PlayerState) {
+  return p.ships.reduce((acc, sh) => acc + sh.size, 0);
+}
+
 interface GameState {
   terrain: Terrain[];
   p1: PlayerState;
