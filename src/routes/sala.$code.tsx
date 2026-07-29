@@ -217,6 +217,10 @@ function RoomPage() {
         fx(board, mv.cell, "sunk");
         setShake(true);
         setTimeout(() => setShake(false), 500);
+        const ship = view.ships.find((sh) => sh.cells.includes(mv.cell));
+        const left = view.ships.filter((sh) => !sh.sunk).length;
+        if (mine) toast.success(`${ship?.name ?? "Navio"} inimigo AFUNDADO! Faltam ${left}.`);
+        else toast.error(`Seu ${ship?.name ?? "navio"} foi afundado! Restam ${left}.`);
       } else {
         audio.play("hit");
         fx(board, mv.cell, "explosion");
@@ -505,7 +509,7 @@ function RoomPage() {
                 terrain={room.terrain}
                 knowledge={replay.me.knowledge}
                 onCell={(i) => void fire(i)}
-                disabled={!myTurn}
+                disabled={!myTurn || Boolean(winner)}
                 boardId="enemy"
                 mapKey={room.map as MapKey}
                 label={`Oceano de ${foeName ?? "adversário"}`}
