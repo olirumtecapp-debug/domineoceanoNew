@@ -144,7 +144,6 @@ function RoomPage() {
   }, [room?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const size = room?.size ?? 10;
-  const terrain = useMemo(() => (room?.terrain ?? []) as ReturnType<typeof autoPlaceFleet> extends never ? never : RoomRow["terrain"], [room]);
   const fleet = useMemo(() => fleetForSize(size), [size]);
 
   const myShips = side === "host" ? room?.host_ships : room?.guest_ships;
