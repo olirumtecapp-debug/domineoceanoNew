@@ -731,8 +731,22 @@ function MatchPage() {
                   <p className="text-muted-foreground">Precisão</p>
                 </div>
                 <div className="rounded-md bg-muted/40 p-2">
-                  <p className="text-base font-bold">{s.sunk}</p>
-                  <p className="text-muted-foreground">Afundados</p>
+                  <p className="text-base font-bold">{s.turnCount}</p>
+                  <p className="text-muted-foreground">Turnos</p>
+                </div>
+                <div className="rounded-md bg-muted/40 p-2">
+                  <p className="text-base font-bold text-primary">{s.hits}</p>
+                  <p className="text-muted-foreground">Dano causado</p>
+                </div>
+                <div className="rounded-md bg-muted/40 p-2">
+                  <p className="text-base font-bold text-destructive">{s.taken}</p>
+                  <p className="text-muted-foreground">Dano recebido</p>
+                </div>
+                <div className="rounded-md bg-muted/40 p-2">
+                  <p className="text-base font-bold">
+                    {s.sunk}/{s.lostShips}
+                  </p>
+                  <p className="text-muted-foreground">Afundou/Perdeu</p>
                 </div>
               </div>
               <div className="mt-5 flex flex-col gap-2">
