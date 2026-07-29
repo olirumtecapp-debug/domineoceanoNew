@@ -708,7 +708,10 @@ function MatchPage() {
               <h2 className="mt-3 text-2xl font-black uppercase tracking-widest">
                 {s.winner === "p1" ? "Vitória Naval" : "Frota Perdida"}
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="mx-auto mt-2 w-fit rounded-full border border-gold/60 bg-gold/15 px-4 py-1 text-xs font-bold uppercase tracking-widest text-gold">
+                Vencedor: {s.winner === "p1" ? "Você" : "Frota Inimiga"}
+              </p>
+              <p className="mt-2 text-sm text-muted-foreground">
                 {s.winner === "p1"
                   ? "O oceano é seu, Comandante."
                   : "Sua esquadra foi ao fundo. Reagrupe e retorne."}

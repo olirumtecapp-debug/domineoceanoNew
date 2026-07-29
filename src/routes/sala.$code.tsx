@@ -623,6 +623,9 @@ function RoomPage() {
               <h2 className="mt-3 text-2xl font-black uppercase tracking-widest">
                 {winner === side ? "Vitória Naval" : "Frota Perdida"}
               </h2>
+              <p className="mx-auto mt-2 w-fit rounded-full border border-gold/60 bg-gold/15 px-4 py-1 text-xs font-bold uppercase tracking-widest text-gold">
+                Vencedor: {winner === side ? myName ?? "Você" : foeName ?? "Adversário"}
+              </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 {winner === side
                   ? `Você dominou ${foeName ?? "o adversário"} nesta batalha.`
