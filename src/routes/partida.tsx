@@ -660,16 +660,37 @@ function MatchPage() {
                 </div>
               </div>
 
-              <div className="max-h-64 overflow-y-auto rounded-xl panel-metal p-3">
-                <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">Rádio de combate</p>
+              <div className="rounded-xl panel-metal p-3">
+                <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">Painel de comando</p>
+                <div className="grid grid-cols-2 gap-2 text-center text-[11px]">
+                  <div className="rounded-md bg-muted/40 p-2">
+                    <p className="text-base font-bold text-primary">{s.hits}</p>
+                    <p className="text-muted-foreground">Dano causado</p>
+                  </div>
+                  <div className="rounded-md bg-muted/40 p-2">
+                    <p className="text-base font-bold text-destructive">{s.taken}</p>
+                    <p className="text-muted-foreground">Dano recebido</p>
+                  </div>
+                  <div className="rounded-md bg-muted/40 p-2">
+                    <p className="text-base font-bold text-accent">{accuracy}%</p>
+                    <p className="text-muted-foreground">Precisão</p>
+                  </div>
+                  <div className="rounded-md bg-muted/40 p-2">
+                    <p className="text-base font-bold">
+                      {s.sunk}/{s.lostShips}
+                    </p>
+                    <p className="text-muted-foreground">Afundou/Perdeu</p>
+                  </div>
+                </div>
+                <p className="mt-3 mb-1 text-[10px] uppercase tracking-widest text-muted-foreground">Últimas ordens</p>
                 <ul className="space-y-1 text-[11px]">
-                  {s.log.map((l) => (
+                  {s.log.slice(0, 4).map((l) => (
                     <li
                       key={l.id}
                       className={cn(
-                        "rounded px-2 py-1",
-                        l.kind === "hit" && "bg-destructive/15 text-destructive-foreground",
-                        l.kind === "sunk" && "bg-destructive/30",
+                        "truncate rounded px-2 py-1",
+                        l.kind === "hit" && "bg-destructive/15",
+                        l.kind === "sunk" && "bg-destructive/30 font-semibold",
                         l.kind === "ability" && "bg-primary/15",
                         l.who === "p2" && "text-muted-foreground",
                       )}
@@ -679,6 +700,7 @@ function MatchPage() {
                   ))}
                 </ul>
               </div>
+
             </aside>
           </div>
         )}
