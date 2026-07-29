@@ -436,10 +436,11 @@ function MatchPage() {
         src={MAP_IMAGES[map]}
         alt=""
         aria-hidden
-        className="pointer-events-none fixed inset-0 h-full w-full object-cover opacity-25"
+        className="pointer-events-none fixed inset-0 h-full w-full object-cover opacity-70"
       />
-      <div className="pointer-events-none fixed inset-0 bg-background/70" />
-      <OceanScene weather="clear" intensity="calm" className="pointer-events-none fixed inset-0 h-full w-full opacity-40" />
+      <div className="pointer-events-none fixed inset-0 bg-background/35" />
+      <OceanScene weather="clear" intensity="calm" className="pointer-events-none fixed inset-0 h-full w-full opacity-20" />
+
       <div className="relative z-10 mx-auto max-w-7xl px-3 py-4 sm:px-6">
         {/* top bar */}
         <header className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl panel-metal px-3 py-2">
@@ -449,7 +450,7 @@ function MatchPage() {
                 <Home className="h-4 w-4" /> Base
               </Link>
             </Button>
-            <Badge variant="secondary">{mapName}</Badge>
+            <Badge variant="secondary">Cenário: {mapName}</Badge>
             <Badge variant="secondary">{size}x{size}</Badge>
             <Badge className="bg-accent text-accent-foreground">{diffName}</Badge>
           </div>

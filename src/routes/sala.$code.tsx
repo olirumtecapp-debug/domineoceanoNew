@@ -371,9 +371,10 @@ function RoomPage() {
         src={MAP_IMAGES[room.map as MapKey]}
         alt=""
         aria-hidden
-        className="pointer-events-none fixed inset-0 h-full w-full object-cover opacity-25"
+        className="pointer-events-none fixed inset-0 h-full w-full object-cover opacity-70"
       />
-      <div className="pointer-events-none fixed inset-0 bg-background/70" />
+      <div className="pointer-events-none fixed inset-0 bg-background/35" />
+
       <div className="relative z-10 mx-auto max-w-7xl px-3 py-4 sm:px-6">
         <header className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl panel-metal px-3 py-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -389,7 +390,7 @@ function RoomPage() {
               {room.code}
               <Copy className="h-3.5 w-3.5" />
             </button>
-            <Badge variant="secondary">{mapName}</Badge>
+            <Badge variant="secondary">Cenário: {mapName}</Badge>
             <Badge variant="secondary">
               {room.size}x{room.size}
             </Badge>

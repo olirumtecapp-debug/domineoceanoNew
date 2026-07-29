@@ -116,13 +116,14 @@ function Index() {
 
         <footer className="rounded-xl panel-metal p-4 text-xs text-muted-foreground">
           <p className="font-semibold text-foreground">
-            Jogue no smartphone, tablet, notebook ou PC — e instale como aplicativo.
+            Funciona em celular, tablet e computador. Instale como app no Android ou no PC (Chrome, Edge ou Brave).
           </p>
           <p className="mt-1">
-            No celular use &quot;Adicionar à tela de início&quot;; no computador, abra o endereço do jogo no Chrome ou Edge e
-            clique em instalar. Veja o passo a passo em <Link to="/como-jogar" className="text-primary underline">Como jogar</Link>.
+            No iPhone/iPad, use Compartilhar ⬆ → &quot;Adicionar à Tela de Início&quot;. Passo a passo completo em{" "}
+            <Link to="/como-jogar" className="text-primary underline">Como jogar</Link>.
           </p>
         </footer>
+
       </div>
       <SupportButton />
     </div>

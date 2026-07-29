@@ -65,16 +65,17 @@ export const Board = memo(function Board({
             alt=""
             aria-hidden
             loading="lazy"
-            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-40 saturate-75"
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
           />
         )}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(circle at 30% 20%, oklch(0.32 0.07 232 / 0.72), oklch(0.14 0.05 248 / 0.92))",
+              "radial-gradient(ellipse at center, oklch(0.18 0.05 245 / 0.12) 30%, oklch(0.12 0.04 248 / 0.72) 100%)",
           }}
         />
+
         <div className="relative flex gap-1">
           {/* numbers ruler */}
           <div
@@ -87,7 +88,7 @@ export const Board = memo(function Board({
                 key={r}
                 className={cn(
                   "flex items-center justify-center font-mono font-bold leading-none",
-                  hover !== null && xy(size, hover).y === r ? "text-accent" : "text-primary/60",
+                  hover !== null && xy(size, hover).y === r ? "text-accent" : "text-[oklch(0.9_0.05_225)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]",
                 )}
               >
                 {r + 1}
@@ -107,7 +108,7 @@ export const Board = memo(function Board({
                   key={c}
                   className={cn(
                     "flex items-center justify-center font-mono font-bold leading-none",
-                    hover !== null && xy(size, hover).x === c ? "text-accent" : "text-primary/60",
+                    hover !== null && xy(size, hover).x === c ? "text-accent" : "text-[oklch(0.9_0.05_225)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]",
                   )}
                 >
                   {String.fromCharCode(65 + c)}
@@ -140,22 +141,23 @@ export const Board = memo(function Board({
                   onFocus={() => setHover(i)}
                   aria-label={`Célula ${coordLabel(size, i)}`}
                   className={cn(
-                    "group relative aspect-square rounded-[3px] transition-all duration-150",
-                    "bg-[oklch(0.30_0.06_230_/_0.45)]",
-                    (x + y) % 2 === 0 && "bg-[oklch(0.34_0.06_228_/_0.45)]",
-                    t !== "water" && "bg-[oklch(0.35_0.03_120_/_0.75)]",
+                    "group relative aspect-square rounded-[3px] ring-inset ring-[oklch(0.75_0.06_225_/_0.18)] transition-all duration-150",
+                    "bg-[oklch(0.30_0.06_230_/_0.14)] ring-1",
+                    (x + y) % 2 === 0 && "bg-[oklch(0.85_0.05_225_/_0.10)]",
+                    t !== "water" && "bg-[oklch(0.35_0.03_120_/_0.45)]",
                     !disabled &&
                       !k.shot &&
                       t === "water" &&
                       onCell &&
                       "cursor-crosshair hover:bg-primary/40 hover:ring-1 hover:ring-primary",
-                    missHere && "bg-[oklch(0.24_0.04_240_/_0.85)]",
-                    hitHere && "bg-destructive/70",
+                    missHere && "bg-[oklch(0.24_0.04_240_/_0.80)]",
+                    hitHere && "bg-destructive/75",
                     sunkShip && "bg-destructive/85",
                     k.revealedShip && !k.shot && "ring-1 ring-gold",
                     highlight.includes(i) && "ring-2 ring-accent",
                     compact ? "text-[7px]" : "text-[9px] sm:text-[11px]",
                   )}
+
                 >
                   {t !== "water" &&
                     (() => {
