@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Ocean Dominion — Estratégia Naval por Turnos" },
       {
         property: "og:description",
-        content: "Guerra naval moderna: monte sua frota, use habilidades táticas e domine o oceano.",
+        content: "Comande uma frota de elite em batalhas navais por turnos contra IA em 6 níveis. Radar, sonar, mísseis guiados e combate cinematográfico no celular ou no PC.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

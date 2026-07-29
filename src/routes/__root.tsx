@@ -81,16 +81,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Ocean Dominion — Estratégia Naval por Turnos" },
       {
         name: "description",
-        content: "Jogo de estratégia naval por turnos com IA em 6 níveis, habilidades táticas e combate cinematográfico.",
+        content: "Comande uma frota de elite em batalhas navais por turnos contra IA em 6 níveis. Radar, sonar, mísseis guiados e combate cinematográfico no celular ou no PC.",
       },
       { name: "author", content: "Murilo Ferreira da Silva" },
       { name: "theme-color", content: "#0a1626" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-title", content: "Ocean Dominion" },
       { property: "og:title", content: "Ocean Dominion — Estratégia Naval por Turnos" },
-      { property: "og:description", content: "Comande uma frota de elite e domine o oceano." },
+      { property: "og:description", content: "Comande uma frota de elite em batalhas navais por turnos contra IA em 6 níveis. Radar, sonar, mísseis guiados e combate cinematográfico no celular ou no PC." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Ocean Dominion — Estratégia Naval por Turnos" },
+      { name: "twitter:description", content: "Comande uma frota de elite em batalhas navais por turnos contra IA em 6 níveis. Radar, sonar, mísseis guiados e combate cinematográfico no celular ou no PC." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2cb8626c-b001-42e9-b302-380e4833836f/id-preview-063e46ab--4084f102-a61f-42f1-a9ed-a7a2c9af6d9c.lovable.app-1785347809147.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2cb8626c-b001-42e9-b302-380e4833836f/id-preview-063e46ab--4084f102-a61f-42f1-a9ed-a7a2c9af6d9c.lovable.app-1785347809147.png" },
     ],
     links: [
       {
