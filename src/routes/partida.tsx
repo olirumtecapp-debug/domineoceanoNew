@@ -289,6 +289,8 @@ function MatchPage() {
     const conf = ABILITIES.find((a) => a.key === key)!;
     atk.cooldowns[key] = conf.cooldown;
     const { x, y } = xy(size, index);
+    const board = attacker === "p1" ? "enemy" : "own";
+    if (key === "radar" || key === "sonar" || key === "drone") fx(board, index, "scan");
     switch (key) {
       case "radar": {
         let count = 0;
