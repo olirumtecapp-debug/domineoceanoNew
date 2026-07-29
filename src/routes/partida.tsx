@@ -42,6 +42,8 @@ import {
   xy,
 } from "@/game/engine";
 import { ABILITIES, DIFFICULTIES, MAPS, fleetForSize } from "@/game/fleet";
+import { fx } from "@/game/fx";
+import { MAP_IMAGES, SHIP_SPRITES } from "@/game/assets";
 import type { AbilityKey, Difficulty, LogEntry, MapKey, Orientation, PlayerState, Ship, Terrain } from "@/game/types";
 import { audio } from "@/lib/audio";
 import { recordMatch } from "@/lib/profile";
@@ -241,8 +243,10 @@ function MatchPage() {
       if (out.result !== "miss") s.hits++;
     }
     const label = coordLabel(size, index);
+    const board = attacker === "p1" ? "enemy" : "own";
     if (out.result === "miss") {
       if (!silent) audio.play("miss");
+      fx(board, index, "splash");
       pushLog(attacker, `${atk.name}: tiro na água em ${label}.`, "miss");
     } else {
       const justSunk = out.ship?.sunk;
@@ -253,12 +257,14 @@ function MatchPage() {
         setShake(true);
         setTimeout(() => setShake(false), 500);
         // mark all its cells
-        out.ship!.cells.forEach((c) => {
+        out.ship!.cells.forEach((c, k) => {
           atk.knowledge[c] = { ...atk.knowledge[c], shot: true, result: "sunk" };
           def.incoming[c] = { shot: true, result: "sunk" };
+          setTimeout(() => fx(board, c, "sunk"), k * 110);
         });
       } else {
         if (!silent) audio.play("hit");
+        fx(board, index, "explosion");
         pushLog(attacker, `Impacto confirmado em ${label}!`, "hit");
       }
     }
@@ -283,6 +289,8 @@ function MatchPage() {
     const conf = ABILITIES.find((a) => a.key === key)!;
     atk.cooldowns[key] = conf.cooldown;
     const { x, y } = xy(size, index);
+    const board = attacker === "p1" ? "enemy" : "own";
+    if (key === "radar" || key === "sonar" || key === "drone") fx(board, index, "scan");
     switch (key) {
       case "radar": {
         let count = 0;
@@ -412,7 +420,14 @@ function MatchPage() {
 
   return (
     <div className={cn("relative min-h-screen", shake && "animate-od-shake")}>
-      <OceanScene weather="clear" intensity="calm" className="pointer-events-none fixed inset-0 h-full w-full opacity-60" />
+      <img
+        src={MAP_IMAGES[map]}
+        alt=""
+        aria-hidden
+        className="pointer-events-none fixed inset-0 h-full w-full object-cover opacity-25"
+      />
+      <div className="pointer-events-none fixed inset-0 bg-background/70" />
+      <OceanScene weather="clear" intensity="calm" className="pointer-events-none fixed inset-0 h-full w-full opacity-40" />
       <div className="relative z-10 mx-auto max-w-7xl px-3 py-4 sm:px-6">
         {/* top bar */}
         <header className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl panel-metal px-3 py-2">
@@ -451,6 +466,7 @@ function MatchPage() {
                 knowledge={s.p1.incoming}
                 ships={s.p1.ships}
                 onCell={placeAt}
+                mapKey={map}
                 label="Posicione sua frota"
               />
             </div>
@@ -482,6 +498,13 @@ function MatchPage() {
                           : "hover:bg-muted/40",
                       )}
                     >
+                      <img
+                        src={SHIP_SPRITES[def.key]}
+                        alt=""
+                        aria-hidden
+                        loading="lazy"
+                        className="mb-1 h-8 w-full object-contain object-left drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+                      />
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-semibold">{def.name}</span>
                         <span className="flex gap-[2px]">
@@ -518,6 +541,8 @@ function MatchPage() {
                 knowledge={s.p1.knowledge}
                 onCell={playerFire}
                 disabled={s.turn !== "p1" || s.phase === "over"}
+                boardId="enemy"
+                mapKey={map}
                 label={ability ? `Alvo para ${ABILITIES.find((a) => a.key === ability)!.name}` : "Oceano inimigo — ataque"}
               />
               <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
@@ -537,7 +562,15 @@ function MatchPage() {
             </div>
 
             <div className="rounded-xl panel-metal p-3">
-              <Board size={size} terrain={terrain} knowledge={s.p1.incoming} ships={s.p1.ships} label="Sua frota" />
+              <Board
+                size={size}
+                terrain={terrain}
+                knowledge={s.p1.incoming}
+                ships={s.p1.ships}
+                boardId="own"
+                mapKey={map}
+                label="Sua frota"
+              />
               <div className="mt-3 space-y-1">
                 {s.p1.ships.map((sh) => {
                   const alive = sh.damage.filter((d) => d < sh.armor).length;

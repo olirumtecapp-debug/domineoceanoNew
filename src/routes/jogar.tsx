@@ -7,6 +7,7 @@ import { Logo } from "@/components/ocean/Logo";
 import { OceanScene } from "@/components/ocean/OceanScene";
 import { SupportButton } from "@/components/ocean/SupportButton";
 import { Button } from "@/components/ui/button";
+import { MAP_IMAGES } from "@/game/assets";
 import { DIFFICULTIES, MAPS, fleetForSize } from "@/game/fleet";
 import type { Difficulty, MapKey } from "@/game/types";
 import { cn } from "@/lib/utils";
@@ -87,12 +88,20 @@ function SetupPage() {
                 key={m.key}
                 onClick={() => setMap(m.key)}
                 className={cn(
-                  "rounded-lg border border-border p-3 text-left transition-colors",
+                  "overflow-hidden rounded-lg border border-border text-left transition-colors",
                   map === m.key ? "border-primary bg-primary/15" : "hover:bg-muted/40",
                 )}
               >
-                <p className="text-sm font-semibold">{m.name}</p>
-                <p className="text-[11px] text-muted-foreground">{m.desc}</p>
+                <img
+                  src={MAP_IMAGES[m.key]}
+                  alt={m.name}
+                  loading="lazy"
+                  className={cn("h-20 w-full object-cover transition-opacity", map === m.key ? "opacity-100" : "opacity-70")}
+                />
+                <span className="block p-3">
+                  <span className="block text-sm font-semibold">{m.name}</span>
+                  <span className="block text-[11px] text-muted-foreground">{m.desc}</span>
+                </span>
               </button>
             ))}
           </div>
