@@ -121,8 +121,7 @@ function SetupPage() {
                 </button>
               ))}
             </div>
-          </section>
-        )}
+        </section>
 
         <Button size="lg" className="mt-6 w-full gap-2 glow-primary" onClick={start}>
           <Swords className="h-5 w-5" /> Zarpar para o combate
