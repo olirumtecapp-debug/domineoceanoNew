@@ -19,6 +19,7 @@ import { AdvantagePanel } from "@/components/game/AdvantagePanel";
 import { Board } from "@/components/game/Board";
 import { OceanScene } from "@/components/ocean/OceanScene";
 import { FullscreenButton } from "@/components/ocean/DeviceButtons";
+import { GameLink } from "@/components/ocean/GameLink";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
