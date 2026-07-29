@@ -459,6 +459,7 @@ function MatchPage() {
                 knowledge={s.p1.incoming}
                 ships={s.p1.ships}
                 onCell={placeAt}
+                mapKey={map}
                 label="Posicione sua frota"
               />
             </div>
