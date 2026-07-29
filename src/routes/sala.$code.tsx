@@ -29,6 +29,7 @@ import { MAP_IMAGES, SHIP_SPRITES } from "@/game/assets";
 import {
   allSunk,
   autoPlaceFleet,
+  cellOpen,
   canPlace,
   coordLabel,
   createPlayer,
@@ -168,7 +169,7 @@ function RoomPage() {
       const mine = mv.by === side;
       const atk = mine ? me : foe;
       const def = mine ? foe : me;
-      if (atk.knowledge[mv.cell]?.shot) continue;
+      if (atk.knowledge[mv.cell] && !cellOpen(atk.knowledge[mv.cell])) continue;
       const out = resolveShot(def, room.terrain, mv.cell);
       atk.knowledge[mv.cell] = { ...atk.knowledge[mv.cell], shot: true, result: out.result };
       def.incoming[mv.cell] = { shot: true, result: out.result };
@@ -178,6 +179,7 @@ function RoomPage() {
           def.incoming[c] = { shot: true, result: "sunk" };
         });
       }
+      if (out.result === "blocked") continue;
       if (mine) {
         shots++;
         if (out.result !== "miss") {
@@ -534,34 +536,24 @@ function RoomPage() {
             </div>
 
             <aside className="space-y-3">
-              <div className="rounded-xl panel-metal p-3">
-                <p className="text-xs uppercase tracking-widest text-muted-foreground">Turno {moves.length + 1}</p>
-                <p className={cn("text-lg font-bold", myTurn ? "text-primary" : "text-destructive")}>
-                  {winner ? "Fim de combate" : myTurn ? "Suas ordens" : `${foeName ?? "Adversário"} atacando...`}
-                </p>
-                <div className="mt-3 space-y-2">
-                  <div>
-                    <div className="flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
-                      <span>Sua frota</span>
-                      <span>{remainingSections(replay.me)}</span>
-                    </div>
-                    <Progress
-                      value={(remainingSections(replay.me) / Math.max(1, replay.me.ships.reduce((a, b) => a + b.size, 0))) * 100}
-                      className="h-2"
-                    />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
-                      <span>Frota inimiga</span>
-                      <span>{remainingSections(replay.foe)}</span>
-                    </div>
-                    <Progress
-                      value={(remainingSections(replay.foe) / Math.max(1, replay.foe.ships.reduce((a, b) => a + b.size, 0))) * 100}
-                      className="h-2"
-                    />
-                  </div>
-                </div>
-              </div>
+              <AdvantagePanel
+                me={replay.me}
+                foe={replay.foe}
+                myName={myName ?? "Sua frota"}
+                foeName={foeName ?? "Frota inimiga"}
+                turnNumber={moves.length + 1}
+                myTurn={myTurn}
+                over={Boolean(winner)}
+                statusText={
+                  winner
+                    ? winner === side
+                      ? "Você venceu!"
+                      : "Você foi derrotado"
+                    : myTurn
+                      ? "Suas ordens"
+                      : `${foeName ?? "Adversário"} atacando...`
+                }
+              />
 
               <div className="rounded-xl panel-metal p-3">
                 <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">Painel de comando</p>
