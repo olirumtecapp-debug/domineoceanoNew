@@ -42,10 +42,11 @@ function Index() {
         src={MAP_IMAGES.mar_aberto}
         alt=""
         aria-hidden
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[85vh] w-full object-cover"
+        style={{ maskImage: "linear-gradient(to bottom, #000 55%, transparent)", WebkitMaskImage: "linear-gradient(to bottom, #000 55%, transparent)" }}
       />
-      <OceanScene weather="sunset" className="pointer-events-none absolute inset-0 h-full w-full opacity-55" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/50 via-background/25 to-background" />
+      <OceanScene weather="sunset" className="pointer-events-none absolute inset-0 h-full w-full opacity-60" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/45 via-background/20 to-background" />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-6 sm:px-6">
         <header className="flex flex-wrap items-center justify-between gap-3">
