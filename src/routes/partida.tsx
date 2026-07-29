@@ -243,8 +243,10 @@ function MatchPage() {
       if (out.result !== "miss") s.hits++;
     }
     const label = coordLabel(size, index);
+    const board = attacker === "p1" ? "enemy" : "own";
     if (out.result === "miss") {
       if (!silent) audio.play("miss");
+      fx(board, index, "splash");
       pushLog(attacker, `${atk.name}: tiro na água em ${label}.`, "miss");
     } else {
       const justSunk = out.ship?.sunk;
@@ -255,12 +257,14 @@ function MatchPage() {
         setShake(true);
         setTimeout(() => setShake(false), 500);
         // mark all its cells
-        out.ship!.cells.forEach((c) => {
+        out.ship!.cells.forEach((c, k) => {
           atk.knowledge[c] = { ...atk.knowledge[c], shot: true, result: "sunk" };
           def.incoming[c] = { shot: true, result: "sunk" };
+          setTimeout(() => fx(board, c, "sunk"), k * 110);
         });
       } else {
         if (!silent) audio.play("hit");
+        fx(board, index, "explosion");
         pushLog(attacker, `Impacto confirmado em ${label}!`, "hit");
       }
     }
