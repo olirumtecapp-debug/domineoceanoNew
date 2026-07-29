@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { Trees, Mountain, TowerControl, LifeBuoy, Factory } from "lucide-react";
 
 import { FxCanvas } from "@/components/game/FxCanvas";
 import { SHIP_SPRITES, MAP_IMAGES } from "@/game/assets";
@@ -20,13 +21,12 @@ interface Props {
   mapKey?: MapKey;
 }
 
-const TERRAIN_ICON: Record<Terrain, string> = {
-  water: "",
-  island: "🏝️",
-  rock: "🪨",
-  lighthouse: "🗼",
-  buoy: "🛟",
-  rig: "🛢️",
+const TERRAIN_ICON: Partial<Record<Terrain, typeof Trees>> = {
+  island: Trees,
+  rock: Mountain,
+  lighthouse: TowerControl,
+  buoy: LifeBuoy,
+  rig: Factory,
 };
 
 export const Board = memo(function Board({
