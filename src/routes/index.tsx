@@ -5,6 +5,7 @@ import { Anchor, Bot, Users, BookOpen, User, Waves } from "lucide-react";
 import { Logo } from "@/components/ocean/Logo";
 import { OceanScene } from "@/components/ocean/OceanScene";
 import { FullscreenButton, InstallButton } from "@/components/ocean/DeviceButtons";
+import { GameLink } from "@/components/ocean/GameLink";
 import { SupportButton } from "@/components/ocean/SupportButton";
 import { Button } from "@/components/ui/button";
 import { MAP_IMAGES } from "@/game/assets";
@@ -111,6 +112,7 @@ function Index() {
               </div>
             ))}
           </div>
+          <GameLink className="mt-6 max-w-xl" />
         </main>
 
         <footer className="rounded-xl panel-metal p-4 text-xs text-muted-foreground">
