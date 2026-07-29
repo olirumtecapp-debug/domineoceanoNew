@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Trees, Mountain, TowerControl, LifeBuoy, Factory } from "lucide-react";
 
 import { FxCanvas } from "@/components/game/FxCanvas";
@@ -135,6 +135,9 @@ export const Board = memo(function Board({
                   type="button"
                   disabled={disabled || k.shot || t !== "water"}
                   onClick={() => onCell?.(i)}
+                  onMouseEnter={() => setHover(i)}
+                  onMouseLeave={() => setHover((h) => (h === i ? null : h))}
+                  onFocus={() => setHover(i)}
                   aria-label={`Célula ${coordLabel(size, i)}`}
                   className={cn(
                     "group relative aspect-square rounded-[3px] transition-all duration-150",
