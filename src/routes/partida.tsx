@@ -43,7 +43,7 @@ import {
 } from "@/game/engine";
 import { ABILITIES, DIFFICULTIES, MAPS, fleetForSize } from "@/game/fleet";
 import { fx } from "@/game/fx";
-import { SHIP_SPRITES } from "@/game/assets";
+import { MAP_IMAGES, SHIP_SPRITES } from "@/game/assets";
 import type { AbilityKey, Difficulty, LogEntry, MapKey, Orientation, PlayerState, Ship, Terrain } from "@/game/types";
 import { audio } from "@/lib/audio";
 import { recordMatch } from "@/lib/profile";
