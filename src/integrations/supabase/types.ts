@@ -14,7 +14,98 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      room_moves: {
+        Row: {
+          ability: string | null
+          by: string
+          cell: number
+          created_at: string
+          id: number
+          room_id: string
+        }
+        Insert: {
+          ability?: string | null
+          by: string
+          cell: number
+          created_at?: string
+          id?: number
+          room_id: string
+        }
+        Update: {
+          ability?: string | null
+          by?: string
+          cell?: number
+          created_at?: string
+          id?: number
+          room_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "room_moves_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rooms: {
+        Row: {
+          code: string
+          created_at: string
+          guest_name: string | null
+          guest_ready: boolean
+          guest_ships: Json | null
+          host_name: string
+          host_ready: boolean
+          host_ships: Json | null
+          id: string
+          map: string
+          size: number
+          status: string
+          terrain: Json
+          turn: string
+          updated_at: string
+          winner: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          guest_name?: string | null
+          guest_ready?: boolean
+          guest_ships?: Json | null
+          host_name?: string
+          host_ready?: boolean
+          host_ships?: Json | null
+          id?: string
+          map?: string
+          size?: number
+          status?: string
+          terrain?: Json
+          turn?: string
+          updated_at?: string
+          winner?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          guest_name?: string | null
+          guest_ready?: boolean
+          guest_ships?: Json | null
+          host_name?: string
+          host_ready?: boolean
+          host_ships?: Json | null
+          id?: string
+          map?: string
+          size?: number
+          status?: string
+          terrain?: Json
+          turn?: string
+          updated_at?: string
+          winner?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
