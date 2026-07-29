@@ -141,22 +141,23 @@ export const Board = memo(function Board({
                   onFocus={() => setHover(i)}
                   aria-label={`Célula ${coordLabel(size, i)}`}
                   className={cn(
-                    "group relative aspect-square rounded-[3px] transition-all duration-150",
-                    "bg-[oklch(0.30_0.06_230_/_0.45)]",
-                    (x + y) % 2 === 0 && "bg-[oklch(0.34_0.06_228_/_0.45)]",
-                    t !== "water" && "bg-[oklch(0.35_0.03_120_/_0.75)]",
+                    "group relative aspect-square rounded-[3px] ring-inset ring-[oklch(0.75_0.06_225_/_0.18)] transition-all duration-150",
+                    "bg-[oklch(0.30_0.06_230_/_0.14)] ring-1",
+                    (x + y) % 2 === 0 && "bg-[oklch(0.85_0.05_225_/_0.10)]",
+                    t !== "water" && "bg-[oklch(0.35_0.03_120_/_0.45)]",
                     !disabled &&
                       !k.shot &&
                       t === "water" &&
                       onCell &&
                       "cursor-crosshair hover:bg-primary/40 hover:ring-1 hover:ring-primary",
-                    missHere && "bg-[oklch(0.24_0.04_240_/_0.85)]",
-                    hitHere && "bg-destructive/70",
+                    missHere && "bg-[oklch(0.24_0.04_240_/_0.80)]",
+                    hitHere && "bg-destructive/75",
                     sunkShip && "bg-destructive/85",
                     k.revealedShip && !k.shot && "ring-1 ring-gold",
                     highlight.includes(i) && "ring-2 ring-accent",
                     compact ? "text-[7px]" : "text-[9px] sm:text-[11px]",
                   )}
+
                 >
                   {t !== "water" &&
                     (() => {
