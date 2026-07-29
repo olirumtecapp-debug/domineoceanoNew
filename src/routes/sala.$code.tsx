@@ -390,7 +390,7 @@ function RoomPage() {
               {room.code}
               <Copy className="h-3.5 w-3.5" />
             </button>
-            <Badge variant="secondary">{mapName}</Badge>
+            <Badge variant="secondary">Cenário: {mapName}</Badge>
             <Badge variant="secondary">
               {room.size}x{room.size}
             </Badge>

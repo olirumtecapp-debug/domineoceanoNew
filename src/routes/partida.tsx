@@ -450,7 +450,7 @@ function MatchPage() {
                 <Home className="h-4 w-4" /> Base
               </Link>
             </Button>
-            <Badge variant="secondary">{mapName}</Badge>
+            <Badge variant="secondary">Cenário: {mapName}</Badge>
             <Badge variant="secondary">{size}x{size}</Badge>
             <Badge className="bg-accent text-accent-foreground">{diffName}</Badge>
           </div>
