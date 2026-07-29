@@ -28,8 +28,10 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { aiDecide } from "@/game/ai";
 import {
+  advantage,
   allSunk,
   autoPlaceFleet,
+  cellOpen,
   canPlace,
   coordLabel,
   createPlayer,
@@ -38,6 +40,8 @@ import {
   remainingSections,
   resolveShot,
   shipCells,
+  shipsAlive,
+  totalSections,
   idx,
   xy,
 } from "@/game/engine";
@@ -80,10 +84,6 @@ const ABILITY_ICONS: Record<string, typeof Radar> = {
 };
 
 type Phase = "placing" | "battle" | "over";
-
-function totalSections(p: PlayerState) {
-  return p.ships.reduce((acc, sh) => acc + sh.size, 0);
-}
 
 interface GameState {
   terrain: Terrain[];
@@ -226,6 +226,7 @@ function MatchPage() {
 
   // ---------- combat ----------
   const endMatch = (winner: "p1" | "p2") => {
+    if (s.phase === "over") return;
     s.phase = "over";
     s.winner = winner;
     audio.stopMusic();
@@ -243,7 +244,7 @@ function MatchPage() {
   const applyShot = (attacker: "p1" | "p2", index: number, silent = false) => {
     const atk = attacker === "p1" ? s.p1 : s.p2;
     const def = attacker === "p1" ? s.p2 : s.p1;
-    if (atk.knowledge[index].shot) return;
+    if (!cellOpen(atk.knowledge[index])) return;
     const out = resolveShot(def, terrain, index);
     atk.knowledge[index] = { ...atk.knowledge[index], shot: true, result: out.result };
     def.incoming[index] = { shot: true, result: out.result };
@@ -266,6 +267,9 @@ function MatchPage() {
         if (attacker === "p1") s.sunk++;
         if (!silent) audio.play("sunk");
         pushLog(attacker, `${out.ship!.name} AFUNDADO em ${label}!`, "sunk");
+        const left = shipsAlive(def) ;
+        if (attacker === "p1") toast.success(`${out.ship!.name} inimigo AFUNDADO! Faltam ${left}.`);
+        else toast.error(`Seu ${out.ship!.name} foi afundado! Restam ${left}.`);
         setShake(true);
         setTimeout(() => setShake(false), 500);
         // mark all its cells
@@ -280,10 +284,12 @@ function MatchPage() {
         pushLog(attacker, `Impacto confirmado em ${label}!`, "hit");
       }
     }
+    if (allSunk(def)) endMatch(attacker);
     return out.result;
   };
 
   const nextTurn = () => {
+    if (s.phase === "over") return;
     const cur = s.turn === "p1" ? s.p1 : s.p2;
     (Object.keys(cur.cooldowns) as AbilityKey[]).forEach((k) => {
       cur.cooldowns[k] = Math.max(0, cur.cooldowns[k] - 1);
