@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Home, Smartphone, Monitor, Target, Radar, Ship, Trophy } from "lucide-react";
+import { Home, Smartphone, Monitor, Target, Radar, Ship, Trophy, Waves, Flame } from "lucide-react";
 
 import { Logo } from "@/components/ocean/Logo";
 import { FullscreenButton, InstallButton } from "@/components/ocean/DeviceButtons";
 import { SupportButton } from "@/components/ocean/SupportButton";
 import { Button } from "@/components/ui/button";
-import { ABILITIES, SHIP_DEFS } from "@/game/fleet";
+import { MAP_IMAGES, SHIP_SPRITES } from "@/game/assets";
+import { ABILITIES, MAPS, SHIP_DEFS } from "@/game/fleet";
 
 export const Route = createFileRoute("/como-jogar")({
   head: () => ({
