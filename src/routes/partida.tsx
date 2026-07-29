@@ -53,7 +53,6 @@ const searchSchema = z.object({
   size: z.coerce.number().min(8).max(12).catch(10),
   map: z.string().catch("mar_aberto"),
   difficulty: z.string().catch("normal"),
-  mode: z.enum(["ai", "local"]).catch("ai"),
 });
 
 export const Route = createFileRoute("/partida")({
@@ -82,6 +81,10 @@ const ABILITY_ICONS: Record<string, typeof Radar> = {
 
 type Phase = "placing" | "battle" | "over";
 
+function totalSections(p: PlayerState) {
+  return p.ships.reduce((acc, sh) => acc + sh.size, 0);
+}
+
 interface GameState {
   terrain: Terrain[];
   p1: PlayerState;
@@ -93,6 +96,8 @@ interface GameState {
   shots: number;
   hits: number;
   sunk: number;
+  taken: number;
+  lostShips: number;
   turnCount: number;
 }
 
@@ -119,6 +124,8 @@ function MatchPage() {
     shots: 0,
     hits: 0,
     sunk: 0,
+    taken: 0,
+    lostShips: 0,
     turnCount: 0,
   });
 
@@ -149,6 +156,8 @@ function MatchPage() {
       shots: 0,
       hits: 0,
       sunk: 0,
+      taken: 0,
+      lostShips: 0,
       turnCount: 0,
     };
     setSelectedShipIdx(0);
@@ -241,6 +250,9 @@ function MatchPage() {
     if (attacker === "p1") {
       s.shots++;
       if (out.result !== "miss") s.hits++;
+    } else if (out.result !== "miss") {
+      s.taken++;
+      if (out.ship?.sunk) s.lostShips++;
     }
     const label = coordLabel(size, index);
     const board = attacker === "p1" ? "enemy" : "own";
@@ -586,14 +598,40 @@ function MatchPage() {
 
             <aside className="space-y-3">
               <div className="rounded-xl panel-metal p-3">
-                <p className="text-xs uppercase tracking-widest text-muted-foreground">Turno</p>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground">Turno {s.turnCount + 1}</p>
+                  <span
+                    className={cn(
+                      "h-2.5 w-2.5 rounded-full",
+                      s.turn === "p1" ? "bg-primary animate-pulse" : "bg-destructive animate-pulse",
+                    )}
+                  />
+                </div>
                 <p className={cn("text-lg font-bold", s.turn === "p1" ? "text-primary" : "text-destructive")}>
                   {s.phase === "over" ? "Fim de combate" : s.turn === "p1" ? "Suas ordens" : "Inimigo atacando..."}
                 </p>
-                <p className="mt-1 text-[11px] text-muted-foreground">
-                  Seções restantes — você: {remainingSections(s.p1)} • inimigo: {remainingSections(s.p2)}
-                </p>
+                <div className="mt-3 space-y-2">
+                  <div>
+                    <div className="flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
+                      <span>Sua frota</span>
+                      <span>
+                        {remainingSections(s.p1)}/{totalSections(s.p1)}
+                      </span>
+                    </div>
+                    <Progress value={(remainingSections(s.p1) / Math.max(1, totalSections(s.p1))) * 100} className="h-2" />
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
+                      <span>Frota inimiga</span>
+                      <span>
+                        {remainingSections(s.p2)}/{totalSections(s.p2)}
+                      </span>
+                    </div>
+                    <Progress value={(remainingSections(s.p2) / Math.max(1, totalSections(s.p2))) * 100} className="h-2" />
+                  </div>
+                </div>
               </div>
+
 
               <div className="rounded-xl panel-metal p-3">
                 <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">Habilidades</p>
@@ -622,16 +660,37 @@ function MatchPage() {
                 </div>
               </div>
 
-              <div className="max-h-64 overflow-y-auto rounded-xl panel-metal p-3">
-                <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">Rádio de combate</p>
+              <div className="rounded-xl panel-metal p-3">
+                <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">Painel de comando</p>
+                <div className="grid grid-cols-2 gap-2 text-center text-[11px]">
+                  <div className="rounded-md bg-muted/40 p-2">
+                    <p className="text-base font-bold text-primary">{s.hits}</p>
+                    <p className="text-muted-foreground">Dano causado</p>
+                  </div>
+                  <div className="rounded-md bg-muted/40 p-2">
+                    <p className="text-base font-bold text-destructive">{s.taken}</p>
+                    <p className="text-muted-foreground">Dano recebido</p>
+                  </div>
+                  <div className="rounded-md bg-muted/40 p-2">
+                    <p className="text-base font-bold text-accent">{accuracy}%</p>
+                    <p className="text-muted-foreground">Precisão</p>
+                  </div>
+                  <div className="rounded-md bg-muted/40 p-2">
+                    <p className="text-base font-bold">
+                      {s.sunk}/{s.lostShips}
+                    </p>
+                    <p className="text-muted-foreground">Afundou/Perdeu</p>
+                  </div>
+                </div>
+                <p className="mt-3 mb-1 text-[10px] uppercase tracking-widest text-muted-foreground">Últimas ordens</p>
                 <ul className="space-y-1 text-[11px]">
-                  {s.log.map((l) => (
+                  {s.log.slice(0, 4).map((l) => (
                     <li
                       key={l.id}
                       className={cn(
-                        "rounded px-2 py-1",
-                        l.kind === "hit" && "bg-destructive/15 text-destructive-foreground",
-                        l.kind === "sunk" && "bg-destructive/30",
+                        "truncate rounded px-2 py-1",
+                        l.kind === "hit" && "bg-destructive/15",
+                        l.kind === "sunk" && "bg-destructive/30 font-semibold",
                         l.kind === "ability" && "bg-primary/15",
                         l.who === "p2" && "text-muted-foreground",
                       )}
@@ -641,6 +700,7 @@ function MatchPage() {
                   ))}
                 </ul>
               </div>
+
             </aside>
           </div>
         )}
@@ -671,8 +731,22 @@ function MatchPage() {
                   <p className="text-muted-foreground">Precisão</p>
                 </div>
                 <div className="rounded-md bg-muted/40 p-2">
-                  <p className="text-base font-bold">{s.sunk}</p>
-                  <p className="text-muted-foreground">Afundados</p>
+                  <p className="text-base font-bold">{s.turnCount}</p>
+                  <p className="text-muted-foreground">Turnos</p>
+                </div>
+                <div className="rounded-md bg-muted/40 p-2">
+                  <p className="text-base font-bold text-primary">{s.hits}</p>
+                  <p className="text-muted-foreground">Dano causado</p>
+                </div>
+                <div className="rounded-md bg-muted/40 p-2">
+                  <p className="text-base font-bold text-destructive">{s.taken}</p>
+                  <p className="text-muted-foreground">Dano recebido</p>
+                </div>
+                <div className="rounded-md bg-muted/40 p-2">
+                  <p className="text-base font-bold">
+                    {s.sunk}/{s.lostShips}
+                  </p>
+                  <p className="text-muted-foreground">Afundou/Perdeu</p>
                 </div>
               </div>
               <div className="mt-5 flex flex-col gap-2">

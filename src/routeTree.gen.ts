@@ -11,9 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as PartidaRouteImport } from './routes/partida'
+import { Route as OnlineRouteImport } from './routes/online'
 import { Route as JogarRouteImport } from './routes/jogar'
 import { Route as ComoJogarRouteImport } from './routes/como-jogar'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SalaCodeRouteImport } from './routes/sala.$code'
 
 const PerfilRoute = PerfilRouteImport.update({
   id: '/perfil',
@@ -23,6 +25,11 @@ const PerfilRoute = PerfilRouteImport.update({
 const PartidaRoute = PartidaRouteImport.update({
   id: '/partida',
   path: '/partida',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnlineRoute = OnlineRouteImport.update({
+  id: '/online',
+  path: '/online',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JogarRoute = JogarRouteImport.update({
@@ -40,43 +47,78 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SalaCodeRoute = SalaCodeRouteImport.update({
+  id: '/sala/$code',
+  path: '/sala/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/como-jogar': typeof ComoJogarRoute
   '/jogar': typeof JogarRoute
+  '/online': typeof OnlineRoute
   '/partida': typeof PartidaRoute
   '/perfil': typeof PerfilRoute
+  '/sala/$code': typeof SalaCodeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/como-jogar': typeof ComoJogarRoute
   '/jogar': typeof JogarRoute
+  '/online': typeof OnlineRoute
   '/partida': typeof PartidaRoute
   '/perfil': typeof PerfilRoute
+  '/sala/$code': typeof SalaCodeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/como-jogar': typeof ComoJogarRoute
   '/jogar': typeof JogarRoute
+  '/online': typeof OnlineRoute
   '/partida': typeof PartidaRoute
   '/perfil': typeof PerfilRoute
+  '/sala/$code': typeof SalaCodeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/como-jogar' | '/jogar' | '/partida' | '/perfil'
+  fullPaths:
+    | '/'
+    | '/como-jogar'
+    | '/jogar'
+    | '/online'
+    | '/partida'
+    | '/perfil'
+    | '/sala/$code'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/como-jogar' | '/jogar' | '/partida' | '/perfil'
-  id: '__root__' | '/' | '/como-jogar' | '/jogar' | '/partida' | '/perfil'
+  to:
+    | '/'
+    | '/como-jogar'
+    | '/jogar'
+    | '/online'
+    | '/partida'
+    | '/perfil'
+    | '/sala/$code'
+  id:
+    | '__root__'
+    | '/'
+    | '/como-jogar'
+    | '/jogar'
+    | '/online'
+    | '/partida'
+    | '/perfil'
+    | '/sala/$code'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ComoJogarRoute: typeof ComoJogarRoute
   JogarRoute: typeof JogarRoute
+  OnlineRoute: typeof OnlineRoute
   PartidaRoute: typeof PartidaRoute
   PerfilRoute: typeof PerfilRoute
+  SalaCodeRoute: typeof SalaCodeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -93,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/partida'
       fullPath: '/partida'
       preLoaderRoute: typeof PartidaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/online': {
+      id: '/online'
+      path: '/online'
+      fullPath: '/online'
+      preLoaderRoute: typeof OnlineRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jogar': {
@@ -116,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sala/$code': {
+      id: '/sala/$code'
+      path: '/sala/$code'
+      fullPath: '/sala/$code'
+      preLoaderRoute: typeof SalaCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -123,19 +179,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ComoJogarRoute: ComoJogarRoute,
   JogarRoute: JogarRoute,
+  OnlineRoute: OnlineRoute,
   PartidaRoute: PartidaRoute,
   PerfilRoute: PerfilRoute,
+  SalaCodeRoute: SalaCodeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

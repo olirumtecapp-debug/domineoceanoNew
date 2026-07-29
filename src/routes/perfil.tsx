@@ -122,7 +122,7 @@ function ProfilePage() {
         </section>
 
         <Button asChild size="lg" className="mt-6 w-full">
-          <Link to="/jogar" search={{ mode: "ai" }}>Nova batalha</Link>
+          <Link to="/jogar">Nova batalha</Link>
         </Button>
       </div>
       <SupportButton />
