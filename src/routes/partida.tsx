@@ -548,7 +548,15 @@ function MatchPage() {
             </div>
 
             <div className="rounded-xl panel-metal p-3">
-              <Board size={size} terrain={terrain} knowledge={s.p1.incoming} ships={s.p1.ships} label="Sua frota" />
+              <Board
+                size={size}
+                terrain={terrain}
+                knowledge={s.p1.incoming}
+                ships={s.p1.ships}
+                boardId="own"
+                mapKey={map}
+                label="Sua frota"
+              />
               <div className="mt-3 space-y-1">
                 {s.p1.ships.map((sh) => {
                   const alive = sh.damage.filter((d) => d < sh.armor).length;
