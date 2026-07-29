@@ -226,8 +226,11 @@ export const Board = memo(function Board({
           {boardId && (
             <FxCanvas boardId={boardId} size={size} className="pointer-events-none absolute inset-0 z-30 h-full w-full" />
           )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 });
+
