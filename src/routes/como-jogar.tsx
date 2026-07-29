@@ -162,28 +162,35 @@ function HowToPlay() {
 
         <section className="mt-4 rounded-xl panel-metal p-4">
           <h2 className="flex items-center gap-2 text-lg font-bold">
-            <Smartphone className="h-5 w-5 text-accent" /> Jogue no celular
+            <Smartphone className="h-5 w-5 text-accent" /> Instalar no celular ou tablet
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            O jogo funciona direto no navegador do celular e do tablet, com controles por toque. Para instalar como
-            aplicativo: Android (Chrome) menu ⋮ → &quot;Instalar aplicativo&quot;; iPhone/iPad (Safari) → Compartilhar →
-            &quot;Adicionar à Tela de Início&quot;.
-          </p>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+            <li>
+              <strong>Android (Chrome, Edge ou Brave):</strong> toque em &quot;Instalar app&quot; nesta página; se não
+              aparecer, use o menu ⋮ → &quot;Instalar aplicativo&quot;.
+            </li>
+            <li>
+              <strong>iPhone / iPad (Safari):</strong> toque em Compartilhar ⬆ → &quot;Adicionar à Tela de Início&quot;.
+              O jogo abrirá como um app.
+            </li>
+          </ul>
         </section>
 
         <section className="mt-4 rounded-xl panel-metal p-4">
           <h2 className="flex items-center gap-2 text-lg font-bold">
-            <Monitor className="h-5 w-5 text-primary" /> Jogue no computador ou notebook
+            <Monitor className="h-5 w-5 text-primary" /> Instalar no computador ou notebook
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Abra o endereço do jogo no Chrome ou Edge, clique no ícone de instalar na barra de endereço (ou menu ⋮ →
-            &quot;Instalar Ocean Dominion&quot;) e ele passa a abrir em janela própria, como um programa. Use o botão
-            &quot;Tela cheia&quot; para uma experiência imersiva — clique novamente para desativar.
+            No Chrome, Edge ou Brave, clique em &quot;Instalar app&quot; abaixo ou no ícone de instalar da barra de
+            endereço. O jogo passa a abrir em janela própria, como um programa. Use &quot;Tela cheia&quot; para uma
+            experiência imersiva — clique novamente para desativar.
           </p>
-          <div className="mt-3">
+          <div className="mt-3 flex flex-wrap gap-2">
             <InstallButton size="default" />
+            <FullscreenButton size="default" />
           </div>
         </section>
+
 
         <section className="mt-4 rounded-xl panel-metal p-4">
           <h2 className="flex items-center gap-2 text-lg font-bold">
