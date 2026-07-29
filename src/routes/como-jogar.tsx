@@ -1,0 +1,139 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Home, Smartphone, Monitor, Target, Radar, Ship, Trophy } from "lucide-react";
+
+import { Logo } from "@/components/ocean/Logo";
+import { FullscreenButton, InstallButton } from "@/components/ocean/DeviceButtons";
+import { SupportButton } from "@/components/ocean/SupportButton";
+import { Button } from "@/components/ui/button";
+import { ABILITIES, SHIP_DEFS } from "@/game/fleet";
+
+export const Route = createFileRoute("/como-jogar")({
+  head: () => ({
+    meta: [
+      { title: "Como jogar — Ocean Dominion" },
+      {
+        name: "description",
+        content:
+          "Regras, frota, habilidades especiais e como instalar o Ocean Dominion no celular, tablet, notebook ou PC.",
+      },
+      { property: "og:title", content: "Como jogar — Ocean Dominion" },
+      { property: "og:description", content: "Aprenda as regras do combate naval e instale o jogo em qualquer dispositivo." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: HowToPlay,
+});
+
+function HowToPlay() {
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="mx-auto max-w-4xl px-4 py-6">
+        <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <Link to="/">
+            <Logo compact />
+          </Link>
+          <div className="flex gap-2">
+            <InstallButton />
+            <FullscreenButton />
+            <Button asChild variant="ghost" size="sm" className="gap-2">
+              <Link to="/">
+                <Home className="h-4 w-4" /> Base
+              </Link>
+            </Button>
+          </div>
+        </header>
+
+        <h1 className="text-3xl font-black uppercase tracking-tight">Como jogar</h1>
+
+        <section className="mt-6 rounded-xl panel-metal p-4">
+          <h2 className="flex items-center gap-2 text-lg font-bold">
+            <Target className="h-5 w-5 text-primary" /> Objetivo
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Vence quem afundar toda a frota inimiga. O combate é por turnos: você dispara em uma célula do oceano
+            inimigo, descobre se acertou e passa o comando. Ilhas, rochas e faróis bloqueiam disparos, mas nunca
+            impedem a vitória.
+          </p>
+          <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
+            <li>Escolha tamanho do oceano, mapa e nível do adversário.</li>
+            <li>Posicione sua frota (ou use o posicionamento automático).</li>
+            <li>Ataque célula a célula e use habilidades para revelar posições.</li>
+            <li>Afunde toda a esquadra inimiga antes que ela afunde a sua.</li>
+          </ol>
+        </section>
+
+        <section className="mt-4 rounded-xl panel-metal p-4">
+          <h2 className="flex items-center gap-2 text-lg font-bold">
+            <Ship className="h-5 w-5 text-accent" /> A frota
+          </h2>
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+            {SHIP_DEFS.map((s) => (
+              <li key={s.key} className="rounded-lg border border-border p-3">
+                <p className="text-sm font-semibold">
+                  {s.name} <span className="text-muted-foreground">• {s.size} seções</span>
+                </p>
+                <p className="text-[11px] text-muted-foreground">
+                  {s.desc}
+                  {s.armor > 1 && ` Blindagem ${s.armor}x.`}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="mt-4 rounded-xl panel-metal p-4">
+          <h2 className="flex items-center gap-2 text-lg font-bold">
+            <Radar className="h-5 w-5 text-primary" /> Habilidades especiais
+          </h2>
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+            {ABILITIES.map((a) => (
+              <li key={a.key} className="rounded-lg border border-border p-3">
+                <p className="text-sm font-semibold">
+                  {a.name} <span className="text-muted-foreground">• recarga {a.cooldown} turnos</span>
+                </p>
+                <p className="text-[11px] text-muted-foreground">{a.desc}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="mt-4 rounded-xl panel-metal p-4">
+          <h2 className="flex items-center gap-2 text-lg font-bold">
+            <Smartphone className="h-5 w-5 text-accent" /> Jogue no celular
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            O jogo funciona direto no navegador do celular e do tablet, com controles por toque. Para instalar como
+            aplicativo: Android (Chrome) menu ⋮ → &quot;Instalar aplicativo&quot;; iPhone/iPad (Safari) → Compartilhar →
+            &quot;Adicionar à Tela de Início&quot;.
+          </p>
+        </section>
+
+        <section className="mt-4 rounded-xl panel-metal p-4">
+          <h2 className="flex items-center gap-2 text-lg font-bold">
+            <Monitor className="h-5 w-5 text-primary" /> Jogue no computador ou notebook
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Abra o endereço do jogo no Chrome ou Edge, clique no ícone de instalar na barra de endereço (ou menu ⋮ →
+            &quot;Instalar Ocean Dominion&quot;) e ele passa a abrir em janela própria, como um programa. Use o botão
+            &quot;Tela cheia&quot; para uma experiência imersiva — clique novamente para desativar.
+          </p>
+          <div className="mt-3">
+            <InstallButton size="default" />
+          </div>
+        </section>
+
+        <section className="mt-4 rounded-xl panel-metal p-4">
+          <h2 className="flex items-center gap-2 text-lg font-bold">
+            <Trophy className="h-5 w-5 text-accent" /> Progressão
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Cada batalha rende XP conforme vitória, precisão e navios afundados. Suba de nível, desbloqueie conquistas
+            e acompanhe tudo na página de <Link to="/perfil" className="text-primary underline">Perfil</Link>.
+          </p>
+        </section>
+      </div>
+      <SupportButton />
+    </div>
+  );
+}
