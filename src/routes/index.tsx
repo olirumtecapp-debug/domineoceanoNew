@@ -37,8 +37,14 @@ function Index() {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      <OceanScene weather="clear" className="pointer-events-none absolute inset-0 h-full w-full" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/40 via-background/10 to-background" />
+      <img
+        src={MAP_IMAGES.mar_aberto}
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+      />
+      <OceanScene weather="sunset" className="pointer-events-none absolute inset-0 h-full w-full opacity-55" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/50 via-background/25 to-background" />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-6 sm:px-6">
         <header className="flex flex-wrap items-center justify-between gap-3">
