@@ -65,16 +65,17 @@ export const Board = memo(function Board({
             alt=""
             aria-hidden
             loading="lazy"
-            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-40 saturate-75"
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
           />
         )}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(circle at 30% 20%, oklch(0.32 0.07 232 / 0.72), oklch(0.14 0.05 248 / 0.92))",
+              "radial-gradient(ellipse at center, oklch(0.18 0.05 245 / 0.12) 30%, oklch(0.12 0.04 248 / 0.72) 100%)",
           }}
         />
+
         <div className="relative flex gap-1">
           {/* numbers ruler */}
           <div
