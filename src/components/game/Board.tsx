@@ -106,7 +106,13 @@ export const Board = memo(function Board({
                     compact ? "text-[7px]" : "text-[9px] sm:text-[11px]",
                   )}
                 >
-                  {t !== "water" && <span className="leading-none">{TERRAIN_ICON[t]}</span>}
+                  {t !== "water" &&
+                    (() => {
+                      const Icon = TERRAIN_ICON[t];
+                      return Icon ? (
+                        <Icon className="absolute inset-0 m-auto h-1/2 w-1/2 text-[oklch(0.78_0.09_115)]" />
+                      ) : null;
+                    })()}
                   {missHere && (
                     <span className="absolute inset-0 flex items-center justify-center text-primary/70">•</span>
                   )}
