@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+import { AdvantagePanel } from "@/components/game/AdvantagePanel";
 import { Board } from "@/components/game/Board";
 import { OceanScene } from "@/components/ocean/OceanScene";
 import { FullscreenButton } from "@/components/ocean/DeviceButtons";
@@ -28,8 +29,10 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { aiDecide } from "@/game/ai";
 import {
+  advantage,
   allSunk,
   autoPlaceFleet,
+  cellOpen,
   canPlace,
   coordLabel,
   createPlayer,
@@ -38,6 +41,8 @@ import {
   remainingSections,
   resolveShot,
   shipCells,
+  shipsAlive,
+  totalSections,
   idx,
   xy,
 } from "@/game/engine";
@@ -80,10 +85,6 @@ const ABILITY_ICONS: Record<string, typeof Radar> = {
 };
 
 type Phase = "placing" | "battle" | "over";
-
-function totalSections(p: PlayerState) {
-  return p.ships.reduce((acc, sh) => acc + sh.size, 0);
-}
 
 interface GameState {
   terrain: Terrain[];
@@ -226,6 +227,7 @@ function MatchPage() {
 
   // ---------- combat ----------
   const endMatch = (winner: "p1" | "p2") => {
+    if (s.phase === "over") return;
     s.phase = "over";
     s.winner = winner;
     audio.stopMusic();
@@ -243,7 +245,7 @@ function MatchPage() {
   const applyShot = (attacker: "p1" | "p2", index: number, silent = false) => {
     const atk = attacker === "p1" ? s.p1 : s.p2;
     const def = attacker === "p1" ? s.p2 : s.p1;
-    if (atk.knowledge[index].shot) return;
+    if (!cellOpen(atk.knowledge[index])) return;
     const out = resolveShot(def, terrain, index);
     atk.knowledge[index] = { ...atk.knowledge[index], shot: true, result: out.result };
     def.incoming[index] = { shot: true, result: out.result };
@@ -266,6 +268,9 @@ function MatchPage() {
         if (attacker === "p1") s.sunk++;
         if (!silent) audio.play("sunk");
         pushLog(attacker, `${out.ship!.name} AFUNDADO em ${label}!`, "sunk");
+        const left = shipsAlive(def) ;
+        if (attacker === "p1") toast.success(`${out.ship!.name} inimigo AFUNDADO! Faltam ${left}.`);
+        else toast.error(`Seu ${out.ship!.name} foi afundado! Restam ${left}.`);
         setShake(true);
         setTimeout(() => setShake(false), 500);
         // mark all its cells
@@ -280,10 +285,12 @@ function MatchPage() {
         pushLog(attacker, `Impacto confirmado em ${label}!`, "hit");
       }
     }
+    if (allSunk(def)) endMatch(attacker);
     return out.result;
   };
 
   const nextTurn = () => {
+    if (s.phase === "over") return;
     const cur = s.turn === "p1" ? s.p1 : s.p2;
     (Object.keys(cur.cooldowns) as AbilityKey[]).forEach((k) => {
       cur.cooldowns[k] = Math.max(0, cur.cooldowns[k] - 1);
@@ -598,40 +605,24 @@ function MatchPage() {
             </div>
 
             <aside className="space-y-3">
-              <div className="rounded-xl panel-metal p-3">
-                <div className="flex items-center justify-between">
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground">Turno {s.turnCount + 1}</p>
-                  <span
-                    className={cn(
-                      "h-2.5 w-2.5 rounded-full",
-                      s.turn === "p1" ? "bg-primary animate-pulse" : "bg-destructive animate-pulse",
-                    )}
-                  />
-                </div>
-                <p className={cn("text-lg font-bold", s.turn === "p1" ? "text-primary" : "text-destructive")}>
-                  {s.phase === "over" ? "Fim de combate" : s.turn === "p1" ? "Suas ordens" : "Inimigo atacando..."}
-                </p>
-                <div className="mt-3 space-y-2">
-                  <div>
-                    <div className="flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
-                      <span>Sua frota</span>
-                      <span>
-                        {remainingSections(s.p1)}/{totalSections(s.p1)}
-                      </span>
-                    </div>
-                    <Progress value={(remainingSections(s.p1) / Math.max(1, totalSections(s.p1))) * 100} className="h-2" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
-                      <span>Frota inimiga</span>
-                      <span>
-                        {remainingSections(s.p2)}/{totalSections(s.p2)}
-                      </span>
-                    </div>
-                    <Progress value={(remainingSections(s.p2) / Math.max(1, totalSections(s.p2))) * 100} className="h-2" />
-                  </div>
-                </div>
-              </div>
+              <AdvantagePanel
+                me={s.p1}
+                foe={s.p2}
+                foeName="Frota inimiga"
+                turnNumber={s.turnCount + 1}
+                myTurn={s.turn === "p1"}
+                over={s.phase === "over"}
+                statusText={
+                  s.phase === "over"
+                    ? s.winner === "p1"
+                      ? "Você venceu!"
+                      : "Você foi derrotado"
+                    : s.turn === "p1"
+                      ? "Suas ordens"
+                      : "Inimigo atacando..."
+                }
+              />
+
 
 
               <div className="rounded-xl panel-metal p-3">
@@ -717,7 +708,10 @@ function MatchPage() {
               <h2 className="mt-3 text-2xl font-black uppercase tracking-widest">
                 {s.winner === "p1" ? "Vitória Naval" : "Frota Perdida"}
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="mx-auto mt-2 w-fit rounded-full border border-gold/60 bg-gold/15 px-4 py-1 text-xs font-bold uppercase tracking-widest text-gold">
+                Vencedor: {s.winner === "p1" ? "Você" : "Frota Inimiga"}
+              </p>
+              <p className="mt-2 text-sm text-muted-foreground">
                 {s.winner === "p1"
                   ? "O oceano é seu, Comandante."
                   : "Sua esquadra foi ao fundo. Reagrupe e retorne."}

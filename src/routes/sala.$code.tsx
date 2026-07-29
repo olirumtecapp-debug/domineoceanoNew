@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+import { AdvantagePanel } from "@/components/game/AdvantagePanel";
 import { Board } from "@/components/game/Board";
 import { OceanScene } from "@/components/ocean/OceanScene";
 import { FullscreenButton } from "@/components/ocean/DeviceButtons";
@@ -28,6 +29,7 @@ import { MAP_IMAGES, SHIP_SPRITES } from "@/game/assets";
 import {
   allSunk,
   autoPlaceFleet,
+  cellOpen,
   canPlace,
   coordLabel,
   createPlayer,
@@ -167,7 +169,7 @@ function RoomPage() {
       const mine = mv.by === side;
       const atk = mine ? me : foe;
       const def = mine ? foe : me;
-      if (atk.knowledge[mv.cell]?.shot) continue;
+      if (atk.knowledge[mv.cell] && !cellOpen(atk.knowledge[mv.cell])) continue;
       const out = resolveShot(def, room.terrain, mv.cell);
       atk.knowledge[mv.cell] = { ...atk.knowledge[mv.cell], shot: true, result: out.result };
       def.incoming[mv.cell] = { shot: true, result: out.result };
@@ -177,6 +179,7 @@ function RoomPage() {
           def.incoming[c] = { shot: true, result: "sunk" };
         });
       }
+      if (out.result === "blocked") continue;
       if (mine) {
         shots++;
         if (out.result !== "miss") {
@@ -214,6 +217,10 @@ function RoomPage() {
         fx(board, mv.cell, "sunk");
         setShake(true);
         setTimeout(() => setShake(false), 500);
+        const ship = view.ships.find((sh) => sh.cells.includes(mv.cell));
+        const left = view.ships.filter((sh) => !sh.sunk).length;
+        if (mine) toast.success(`${ship?.name ?? "Navio"} inimigo AFUNDADO! Faltam ${left}.`);
+        else toast.error(`Seu ${ship?.name ?? "navio"} foi afundado! Restam ${left}.`);
       } else {
         audio.play("hit");
         fx(board, mv.cell, "explosion");
@@ -502,7 +509,7 @@ function RoomPage() {
                 terrain={room.terrain}
                 knowledge={replay.me.knowledge}
                 onCell={(i) => void fire(i)}
-                disabled={!myTurn}
+                disabled={!myTurn || Boolean(winner)}
                 boardId="enemy"
                 mapKey={room.map as MapKey}
                 label={`Oceano de ${foeName ?? "adversário"}`}
@@ -533,34 +540,24 @@ function RoomPage() {
             </div>
 
             <aside className="space-y-3">
-              <div className="rounded-xl panel-metal p-3">
-                <p className="text-xs uppercase tracking-widest text-muted-foreground">Turno {moves.length + 1}</p>
-                <p className={cn("text-lg font-bold", myTurn ? "text-primary" : "text-destructive")}>
-                  {winner ? "Fim de combate" : myTurn ? "Suas ordens" : `${foeName ?? "Adversário"} atacando...`}
-                </p>
-                <div className="mt-3 space-y-2">
-                  <div>
-                    <div className="flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
-                      <span>Sua frota</span>
-                      <span>{remainingSections(replay.me)}</span>
-                    </div>
-                    <Progress
-                      value={(remainingSections(replay.me) / Math.max(1, replay.me.ships.reduce((a, b) => a + b.size, 0))) * 100}
-                      className="h-2"
-                    />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
-                      <span>Frota inimiga</span>
-                      <span>{remainingSections(replay.foe)}</span>
-                    </div>
-                    <Progress
-                      value={(remainingSections(replay.foe) / Math.max(1, replay.foe.ships.reduce((a, b) => a + b.size, 0))) * 100}
-                      className="h-2"
-                    />
-                  </div>
-                </div>
-              </div>
+              <AdvantagePanel
+                me={replay.me}
+                foe={replay.foe}
+                myName={myName ?? "Sua frota"}
+                foeName={foeName ?? "Frota inimiga"}
+                turnNumber={moves.length + 1}
+                myTurn={myTurn}
+                over={Boolean(winner)}
+                statusText={
+                  winner
+                    ? winner === side
+                      ? "Você venceu!"
+                      : "Você foi derrotado"
+                    : myTurn
+                      ? "Suas ordens"
+                      : `${foeName ?? "Adversário"} atacando...`
+                }
+              />
 
               <div className="rounded-xl panel-metal p-3">
                 <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">Painel de comando</p>
@@ -626,6 +623,9 @@ function RoomPage() {
               <h2 className="mt-3 text-2xl font-black uppercase tracking-widest">
                 {winner === side ? "Vitória Naval" : "Frota Perdida"}
               </h2>
+              <p className="mx-auto mt-2 w-fit rounded-full border border-gold/60 bg-gold/15 px-4 py-1 text-xs font-bold uppercase tracking-widest text-gold">
+                Vencedor: {winner === side ? myName ?? "Você" : foeName ?? "Adversário"}
+              </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 {winner === side
                   ? `Você dominou ${foeName ?? "o adversário"} nesta batalha.`

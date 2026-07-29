@@ -31,7 +31,8 @@ export interface Ship {
 
 export type Terrain = "water" | "island" | "rock" | "lighthouse" | "buoy" | "rig";
 
-export type ShotResult = "miss" | "hit" | "sunk" | "blocked";
+/** "damaged" = section hit but still afloat (armored ship): can be attacked again. */
+export type ShotResult = "miss" | "hit" | "sunk" | "blocked" | "damaged";
 
 export interface CellKnowledge {
   shot: boolean;

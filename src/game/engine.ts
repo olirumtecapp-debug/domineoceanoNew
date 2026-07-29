@@ -153,10 +153,15 @@ export function resolveShot(defender: PlayerState, terrain: Terrain[], index: nu
   if (!ship) return { index, result: "miss" };
   const pos = ship.cells.indexOf(index);
   ship.damage[pos] = Math.min(ship.armor, ship.damage[pos] + 1);
-  const destroyed = ship.damage.every((d, i2) => d >= ship.armor && i2 >= 0);
-  if (destroyed) ship.sunk = true;
   const cellDown = ship.damage[pos] >= ship.armor;
-  return { index, result: ship.sunk ? "sunk" : cellDown ? "hit" : "hit", ship };
+  const destroyed = ship.damage.every((d) => d >= ship.armor);
+  if (destroyed) ship.sunk = true;
+  return { index, result: ship.sunk ? "sunk" : cellDown ? "hit" : "damaged", ship };
+}
+
+/** A cell can still be targeted while it was only damaged (armored sections). */
+export function cellOpen(k: CellKnowledge) {
+  return !k.shot || k.result === "damaged";
 }
 
 export function allSunk(p: PlayerState) {
@@ -169,3 +174,24 @@ export function remainingSections(p: PlayerState) {
     0,
   );
 }
+
+export function totalSections(p: PlayerState) {
+  return p.ships.reduce((acc, s) => acc + s.size, 0);
+}
+
+export function shipsAlive(p: PlayerState) {
+  return p.ships.filter((s) => !s.sunk).length;
+}
+
+export type Advantage = "winning" | "even" | "losing";
+
+/** Compares fleet integrity (0-100) of both sides. */
+export function advantage(me: PlayerState, foe: PlayerState): Advantage {
+  const mine = remainingSections(me) / Math.max(1, totalSections(me));
+  const theirs = remainingSections(foe) / Math.max(1, totalSections(foe));
+  const delta = mine - theirs;
+  if (delta > 0.08) return "winning";
+  if (delta < -0.08) return "losing";
+  return "even";
+}
+
