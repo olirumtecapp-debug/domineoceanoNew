@@ -127,7 +127,6 @@ function SetupPage() {
           <Swords className="h-5 w-5" /> Zarpar para o combate
         </Button>
       </div>
-      <SupportButton />
     </div>
   );
 }

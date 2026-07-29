@@ -163,7 +163,6 @@ function OnlinePage() {
           </section>
         </div>
       </div>
-      <SupportButton />
     </div>
   );
 }

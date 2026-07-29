@@ -202,7 +202,6 @@ function HowToPlay() {
           </p>
         </section>
       </div>
-      <SupportButton />
     </div>
   );
 }

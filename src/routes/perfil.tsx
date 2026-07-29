@@ -125,7 +125,6 @@ function ProfilePage() {
           <Link to="/jogar">Nova batalha</Link>
         </Button>
       </div>
-      <SupportButton />
     </div>
   );
 }

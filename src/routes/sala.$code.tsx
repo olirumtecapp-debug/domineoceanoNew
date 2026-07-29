@@ -674,7 +674,6 @@ function RoomPage() {
           </div>
         )}
       </div>
-      <SupportButton />
     </div>
   );
 }

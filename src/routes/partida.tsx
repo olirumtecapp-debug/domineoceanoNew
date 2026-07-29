@@ -757,7 +757,6 @@ function MatchPage() {
           </div>
         )}
       </div>
-      <SupportButton />
     </div>
   );
 }
