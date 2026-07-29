@@ -48,8 +48,13 @@ export const Board = memo(function Board({
 
   return (
     <div className="w-full">
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-2 flex items-center justify-between gap-2">
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{label}</p>
+        {onCell && !disabled && (
+          <span className="rounded bg-primary/15 px-2 py-0.5 font-mono text-[10px] font-bold text-primary">
+            {hover !== null ? `ALVO ${coordLabel(size, hover)}` : "ALVO --"}
+          </span>
+        )}
       </div>
       <div className="relative overflow-hidden rounded-xl border border-border p-1.5 sm:p-2">
         {mapKey && (
@@ -68,11 +73,52 @@ export const Board = memo(function Board({
               "radial-gradient(circle at 30% 20%, oklch(0.32 0.07 232 / 0.72), oklch(0.14 0.05 248 / 0.92))",
           }}
         />
-        <div className="relative">
+        <div className="relative flex gap-1">
+          {/* numbers ruler */}
+          <div
+            className="grid w-3 shrink-0 gap-[2px] text-[8px] sm:w-4 sm:gap-[3px] sm:text-[10px]"
+            style={{ gridTemplateRows: `repeat(${size}, minmax(0, 1fr))`, marginTop: "calc(0.85rem + 2px)" }}
+            aria-hidden
+          >
+            {Array.from({ length: size }, (_, r) => (
+              <span
+                key={r}
+                className={cn(
+                  "flex items-center justify-center font-mono font-bold leading-none",
+                  hover !== null && xy(size, hover).y === r ? "text-accent" : "text-primary/60",
+                )}
+              >
+                {r + 1}
+              </span>
+            ))}
+          </div>
+
+          <div className="min-w-0 flex-1">
+            {/* letters ruler */}
+            <div
+              className="mb-[2px] grid h-[0.85rem] gap-[2px] text-[8px] sm:gap-[3px] sm:text-[10px]"
+              style={{ gridTemplateColumns: `repeat(${size}, minmax(0, 1fr))` }}
+              aria-hidden
+            >
+              {Array.from({ length: size }, (_, c) => (
+                <span
+                  key={c}
+                  className={cn(
+                    "flex items-center justify-center font-mono font-bold leading-none",
+                    hover !== null && xy(size, hover).x === c ? "text-accent" : "text-primary/60",
+                  )}
+                >
+                  {String.fromCharCode(65 + c)}
+                </span>
+              ))}
+            </div>
+
+            <div className="relative">
           <div
             className="grid gap-[2px] sm:gap-[3px]"
             style={{ gridTemplateColumns: `repeat(${size}, minmax(0, 1fr))` }}
           >
+
             {Array.from({ length: size * size }, (_, i) => {
               const k = knowledge[i];
               const t = terrain[i];
