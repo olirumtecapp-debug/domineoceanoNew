@@ -73,13 +73,13 @@ function Index() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="gap-2 glow-primary">
-                <Link to="/jogar" search={{ mode: "ai" }}>
-                  <Bot className="h-5 w-5" /> Jogar contra a IA
+                <Link to="/online">
+                  <Users className="h-5 w-5" /> Batalha online com código
                 </Link>
               </Button>
               <Button asChild size="lg" variant="secondary" className="gap-2">
-                <Link to="/jogar" search={{ mode: "local" }}>
-                  <Users className="h-5 w-5" /> Duelo 1x1 no mesmo aparelho
+                <Link to="/jogar">
+                  <Bot className="h-5 w-5" /> Jogar contra a IA
                 </Link>
               </Button>
             </div>

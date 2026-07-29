@@ -1,6 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { z } from "zod";
 import { Home, Swords } from "lucide-react";
 
 import { Logo } from "@/components/ocean/Logo";
@@ -13,7 +12,6 @@ import type { Difficulty, MapKey } from "@/game/types";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/jogar")({
-  validateSearch: z.object({ mode: z.enum(["ai", "local"]).catch("ai") }),
   head: () => ({
     meta: [
       { title: "Preparar batalha — Ocean Dominion" },
@@ -31,14 +29,13 @@ export const Route = createFileRoute("/jogar")({
 });
 
 function SetupPage() {
-  const { mode } = Route.useSearch();
   const navigate = useNavigate();
   const [size, setSize] = useState(10);
   const [map, setMap] = useState<MapKey>("arquipelago");
   const [difficulty, setDifficulty] = useState<Difficulty>("normal");
 
   const start = () =>
-    navigate({ to: "/partida", search: { size, map, difficulty, mode } });
+    navigate({ to: "/partida", search: { size, map, difficulty } });
 
   return (
     <div className="relative min-h-screen">
@@ -58,7 +55,7 @@ function SetupPage() {
 
         <h1 className="text-3xl font-black uppercase tracking-tight">Preparar batalha</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          {mode === "ai" ? "Combate contra a Inteligência Artificial." : "Duelo 1x1 no mesmo aparelho (revezando o comando)."}
+          Combate contra a Inteligência Artificial em seis níveis de dificuldade.
         </p>
 
         <section className="mt-6 rounded-xl panel-metal p-4">
@@ -107,7 +104,7 @@ function SetupPage() {
           </div>
         </section>
 
-        {mode === "ai" && (
+        {true && (
           <section className="mt-4 rounded-xl panel-metal p-4">
             <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Nível do adversário</h2>
             <div className="mt-3 grid gap-2 sm:grid-cols-3">
