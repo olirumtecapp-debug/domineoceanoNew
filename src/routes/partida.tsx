@@ -594,14 +594,40 @@ function MatchPage() {
 
             <aside className="space-y-3">
               <div className="rounded-xl panel-metal p-3">
-                <p className="text-xs uppercase tracking-widest text-muted-foreground">Turno</p>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground">Turno {s.turnCount + 1}</p>
+                  <span
+                    className={cn(
+                      "h-2.5 w-2.5 rounded-full",
+                      s.turn === "p1" ? "bg-primary animate-pulse" : "bg-destructive animate-pulse",
+                    )}
+                  />
+                </div>
                 <p className={cn("text-lg font-bold", s.turn === "p1" ? "text-primary" : "text-destructive")}>
                   {s.phase === "over" ? "Fim de combate" : s.turn === "p1" ? "Suas ordens" : "Inimigo atacando..."}
                 </p>
-                <p className="mt-1 text-[11px] text-muted-foreground">
-                  Seções restantes — você: {remainingSections(s.p1)} • inimigo: {remainingSections(s.p2)}
-                </p>
+                <div className="mt-3 space-y-2">
+                  <div>
+                    <div className="flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
+                      <span>Sua frota</span>
+                      <span>
+                        {remainingSections(s.p1)}/{totalSections(s.p1)}
+                      </span>
+                    </div>
+                    <Progress value={(remainingSections(s.p1) / Math.max(1, totalSections(s.p1))) * 100} className="h-2" />
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
+                      <span>Frota inimiga</span>
+                      <span>
+                        {remainingSections(s.p2)}/{totalSections(s.p2)}
+                      </span>
+                    </div>
+                    <Progress value={(remainingSections(s.p2) / Math.max(1, totalSections(s.p2))) * 100} className="h-2" />
+                  </div>
+                </div>
               </div>
+
 
               <div className="rounded-xl panel-metal p-3">
                 <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">Habilidades</p>
