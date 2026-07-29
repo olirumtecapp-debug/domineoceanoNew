@@ -53,7 +53,6 @@ const searchSchema = z.object({
   size: z.coerce.number().min(8).max(12).catch(10),
   map: z.string().catch("mar_aberto"),
   difficulty: z.string().catch("normal"),
-  mode: z.enum(["ai", "local"]).catch("ai"),
 });
 
 export const Route = createFileRoute("/partida")({
@@ -93,6 +92,8 @@ interface GameState {
   shots: number;
   hits: number;
   sunk: number;
+  taken: number;
+  lostShips: number;
   turnCount: number;
 }
 
@@ -119,6 +120,8 @@ function MatchPage() {
     shots: 0,
     hits: 0,
     sunk: 0,
+    taken: 0,
+    lostShips: 0,
     turnCount: 0,
   });
 
@@ -149,6 +152,8 @@ function MatchPage() {
       shots: 0,
       hits: 0,
       sunk: 0,
+      taken: 0,
+      lostShips: 0,
       turnCount: 0,
     };
     setSelectedShipIdx(0);
@@ -241,6 +246,9 @@ function MatchPage() {
     if (attacker === "p1") {
       s.shots++;
       if (out.result !== "miss") s.hits++;
+    } else if (out.result !== "miss") {
+      s.taken++;
+      if (out.ship?.sunk) s.lostShips++;
     }
     const label = coordLabel(size, index);
     const board = attacker === "p1" ? "enemy" : "own";
