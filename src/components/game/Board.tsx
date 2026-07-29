@@ -159,11 +159,16 @@ export const Board = memo(function Board({
                       alt=""
                       aria-hidden
                       loading="lazy"
-                      className="max-h-none object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]"
+                      className="max-h-none drop-shadow-[0_2px_5px_rgba(0,0,0,0.65)]"
                       style={
                         vertical
-                          ? { width: `${(h / w) * 100}%`, height: `${(w / h) * 100}%`, transform: "rotate(90deg)" }
-                          : { width: "100%", height: "100%" }
+                          ? {
+                              width: `${(h / w) * 100}%`,
+                              height: `${(w / h) * 100}%`,
+                              objectFit: "fill",
+                              transform: "rotate(90deg)",
+                            }
+                          : { width: "100%", height: "100%", objectFit: "fill" }
                       }
                     />
                   </div>
