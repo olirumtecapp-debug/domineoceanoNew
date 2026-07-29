@@ -67,7 +67,7 @@ function OnlinePage() {
 
   return (
     <div className="relative min-h-screen">
-      <OceanScene weather="storm" intensity="rough" className="pointer-events-none absolute inset-0 h-full w-full opacity-70" />
+      <OceanScene weather="storm" intensity="cinematic" className="pointer-events-none absolute inset-0 h-full w-full opacity-70" />
       <div className="pointer-events-none absolute inset-0 bg-background/60" />
       <div className="relative z-10 mx-auto max-w-4xl px-4 py-6">
         <header className="mb-6 flex items-center justify-between">

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as PartidaRouteImport } from './routes/partida'
+import { Route as OnlineRouteImport } from './routes/online'
 import { Route as JogarRouteImport } from './routes/jogar'
 import { Route as ComoJogarRouteImport } from './routes/como-jogar'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,6 +24,11 @@ const PerfilRoute = PerfilRouteImport.update({
 const PartidaRoute = PartidaRouteImport.update({
   id: '/partida',
   path: '/partida',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnlineRoute = OnlineRouteImport.update({
+  id: '/online',
+  path: '/online',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JogarRoute = JogarRouteImport.update({
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/como-jogar': typeof ComoJogarRoute
   '/jogar': typeof JogarRoute
+  '/online': typeof OnlineRoute
   '/partida': typeof PartidaRoute
   '/perfil': typeof PerfilRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/como-jogar': typeof ComoJogarRoute
   '/jogar': typeof JogarRoute
+  '/online': typeof OnlineRoute
   '/partida': typeof PartidaRoute
   '/perfil': typeof PerfilRoute
 }
@@ -60,21 +68,30 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/como-jogar': typeof ComoJogarRoute
   '/jogar': typeof JogarRoute
+  '/online': typeof OnlineRoute
   '/partida': typeof PartidaRoute
   '/perfil': typeof PerfilRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/como-jogar' | '/jogar' | '/partida' | '/perfil'
+  fullPaths: '/' | '/como-jogar' | '/jogar' | '/online' | '/partida' | '/perfil'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/como-jogar' | '/jogar' | '/partida' | '/perfil'
-  id: '__root__' | '/' | '/como-jogar' | '/jogar' | '/partida' | '/perfil'
+  to: '/' | '/como-jogar' | '/jogar' | '/online' | '/partida' | '/perfil'
+  id:
+    | '__root__'
+    | '/'
+    | '/como-jogar'
+    | '/jogar'
+    | '/online'
+    | '/partida'
+    | '/perfil'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ComoJogarRoute: typeof ComoJogarRoute
   JogarRoute: typeof JogarRoute
+  OnlineRoute: typeof OnlineRoute
   PartidaRoute: typeof PartidaRoute
   PerfilRoute: typeof PerfilRoute
 }
@@ -93,6 +110,13 @@ declare module '@tanstack/react-router' {
       path: '/partida'
       fullPath: '/partida'
       preLoaderRoute: typeof PartidaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/online': {
+      id: '/online'
+      path: '/online'
+      fullPath: '/online'
+      preLoaderRoute: typeof OnlineRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jogar': {
@@ -123,6 +147,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ComoJogarRoute: ComoJogarRoute,
   JogarRoute: JogarRoute,
+  OnlineRoute: OnlineRoute,
   PartidaRoute: PartidaRoute,
   PerfilRoute: PerfilRoute,
 }
