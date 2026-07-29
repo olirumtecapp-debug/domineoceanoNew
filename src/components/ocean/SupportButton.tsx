@@ -40,22 +40,10 @@ export function SupportButton({ className }: { className?: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {variant === "floating" ? (
-          <button
-            aria-label="Apoiar o projeto"
-            className={cn(
-              "fixed bottom-5 right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card/90 text-destructive shadow-lg backdrop-blur transition-transform hover:scale-110",
-              className,
-            )}
-          >
-            <Heart className="h-5 w-5 fill-current" />
-          </button>
-        ) : (
-          <Button variant="outline" size="sm" className={cn("gap-2", className)}>
-            <Heart className="h-4 w-4 fill-destructive text-destructive" />
-            Apoiar
-          </Button>
-        )}
+        <Button variant="outline" size="sm" className={cn("gap-2", className)}>
+          <Heart className="h-4 w-4 fill-destructive text-destructive" />
+          Apoiar
+        </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg">
         <DialogHeader>
