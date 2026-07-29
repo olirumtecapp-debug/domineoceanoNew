@@ -527,6 +527,8 @@ function MatchPage() {
                 knowledge={s.p1.knowledge}
                 onCell={playerFire}
                 disabled={s.turn !== "p1" || s.phase === "over"}
+                boardId="enemy"
+                mapKey={map}
                 label={ability ? `Alvo para ${ABILITIES.find((a) => a.key === ability)!.name}` : "Oceano inimigo — ataque"}
               />
               <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
