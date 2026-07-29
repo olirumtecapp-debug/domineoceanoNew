@@ -491,6 +491,13 @@ function MatchPage() {
                           : "hover:bg-muted/40",
                       )}
                     >
+                      <img
+                        src={SHIP_SPRITES[def.key]}
+                        alt=""
+                        aria-hidden
+                        loading="lazy"
+                        className="mb-1 h-8 w-full object-contain object-left drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+                      />
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-semibold">{def.name}</span>
                         <span className="flex gap-[2px]">
