@@ -1,5 +1,5 @@
 import { fleetForSize } from "./fleet";
-import { idx, xy } from "./engine";
+import { cellOpen, idx, xy } from "./engine";
 import type { CellKnowledge, Difficulty, PlayerState, Terrain } from "./types";
 
 interface AiMemory {
@@ -27,7 +27,7 @@ function availableCells(size: number, terrain: Terrain[], k: CellKnowledge[]) {
   const out: number[] = [];
   for (let i = 0; i < size * size; i++) {
     if (terrain[i] !== "water") continue;
-    if (k[i].shot) continue;
+    if (!cellOpen(k[i])) continue;
     out.push(i);
   }
   return out;
@@ -38,7 +38,7 @@ function openHits(size: number, k: CellKnowledge[], defender: PlayerState) {
   const sunkCells = new Set(defender.ships.filter((s) => s.sunk).flatMap((s) => s.cells));
   const hits: number[] = [];
   for (let i = 0; i < size * size; i++) {
-    if (k[i].shot && k[i].result === "hit" && !sunkCells.has(i)) hits.push(i);
+    if (k[i].shot && (k[i].result === "hit" || k[i].result === "damaged") && !sunkCells.has(i)) hits.push(i);
   }
   return hits;
 }
@@ -51,7 +51,8 @@ function remainingShipSizes(defender: PlayerState) {
 function heatmap(size: number, terrain: Terrain[], k: CellKnowledge[], defender: PlayerState) {
   const heat = new Array(size * size).fill(0);
   const sizes = remainingShipSizes(defender);
-  const blocked = (i: number) => terrain[i] !== "water" || (k[i].shot && k[i].result !== "hit");
+  const blocked = (i: number) =>
+    terrain[i] !== "water" || (k[i].shot && k[i].result !== "hit" && k[i].result !== "damaged");
   for (const len of sizes) {
     for (let y = 0; y < size; y++) {
       for (let x = 0; x < size; x++) {
@@ -73,16 +74,16 @@ function heatmap(size: number, terrain: Terrain[], k: CellKnowledge[], defender:
             cells.push(i);
           }
           if (!fits) continue;
-          const hitBonus = cells.filter((c) => k[c].shot && k[c].result === "hit").length;
+          const hitBonus = cells.filter((c) => k[c].shot && (k[c].result === "hit" || k[c].result === "damaged")).length;
           const weight = 1 + hitBonus * 12 + len * 0.4;
-          for (const c of cells) if (!k[c].shot) heat[c] += weight;
+          for (const c of cells) if (cellOpen(k[c])) heat[c] += weight;
         }
       }
     }
   }
   // revealed cells are gold
   for (let i = 0; i < heat.length; i++) {
-    if (k[i].revealedShip && !k[i].shot) heat[i] += 500;
+    if (k[i].revealedShip && cellOpen(k[i])) heat[i] += 500;
   }
   return heat;
 }
