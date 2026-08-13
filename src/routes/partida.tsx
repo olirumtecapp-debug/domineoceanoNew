@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { AdvantagePanel } from "@/components/game/AdvantagePanel";
 import { Board } from "@/components/game/Board";
 import { OceanScene } from "@/components/ocean/OceanScene";
+import { SupportButton } from "@/components/ocean/SupportButton";
 import { FullscreenButton } from "@/components/ocean/DeviceButtons";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
