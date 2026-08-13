@@ -55,7 +55,8 @@ function Index() {
           <div className="flex flex-wrap items-center gap-2">
             <InstallButton />
             <FullscreenButton />
-                </div>
+            <SupportButton />
+          </div>
         </header>
 
         <main className="flex flex-1 flex-col justify-center py-10">
