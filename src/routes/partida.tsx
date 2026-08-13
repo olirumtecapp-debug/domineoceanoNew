@@ -461,6 +461,7 @@ function MatchPage() {
             <Badge className="bg-accent text-accent-foreground">{diffName}</Badge>
           </div>
           <div className="flex items-center gap-2">
+            <SupportButton />
             <Button
               variant="outline"
               size="sm"
