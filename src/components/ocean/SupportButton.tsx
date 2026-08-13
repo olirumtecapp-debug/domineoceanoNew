@@ -14,7 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const PIX_CODE =
-  "00020101021126580014br.gov.bcb.pix0136ccc2fd5a-cc51-4626-ac9b-8010315042f55204000053039865802BR5924MURILO FERREIRA DA SILVA6009SAO PAULO622905251KYF6GJBG4K0TVYH7QKHP9TSD63042519";
+  "00020101021126420014br.gov.bcb.pix0120olirumdev1@gmail.com5204000053039865802BR5918MURILO SILVA - PIJ6008BRASILIA62070503***630432FF";
 
 export function SupportButton({ className }: { className?: string }) {
   const [copied, setCopied] = useState(false);
@@ -60,21 +60,13 @@ export function SupportButton({ className }: { className?: string }) {
           <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm">
             <div className="flex justify-between gap-4">
               <span className="text-muted-foreground">Favorecido</span>
-              <span className="font-medium">Murilo Ferreira da Silva</span>
-            </div>
-            <div className="mt-2 flex justify-between gap-4">
-              <span className="text-muted-foreground">Banco</span>
-              <span className="font-medium">Banco C6</span>
-            </div>
-            <div className="mt-2 flex justify-between gap-4">
-              <span className="text-muted-foreground">Cidade</span>
-              <span className="font-medium">São Paulo</span>
+              <span className="font-medium">Murilo Silva</span>
             </div>
           </div>
 
           <div className="space-y-2">
             <p className="flex items-center gap-2 text-sm font-medium">
-              <QrCode className="h-4 w-4 text-primary" /> Pix copia e cola
+              Pix copia e cola
             </p>
             <textarea
               readOnly
