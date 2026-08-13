@@ -500,7 +500,9 @@ function RoomPage() {
             <p className="mt-4 text-xs text-muted-foreground">
               Peça para o seu adversário abrir o endereço abaixo no computador ou no celular e digitar o código.
             </p>
-            <GameLink className="mt-2 text-left" compact />
+            <div className="mt-2 text-left">
+              <GameLink compact />
+            </div>
           </div>
         )}
 
