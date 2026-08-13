@@ -30,7 +30,7 @@ export function GameLink({
   label?: string;
 }) {
   const [copied, setCopied] = useState(false);
-  const canShare = typeof navigator !== "undefined" && typeof navigator.share === "function";
+  const canShare = false; // Desabilitado para evitar erro de hidratação e inconsistência no mobile
 
   const onCopy = async () => {
     await copyText(GAME_URL);
