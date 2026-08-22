@@ -9,32 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PerfilRouteImport } from './routes/perfil'
-import { Route as PartidaRouteImport } from './routes/partida'
-import { Route as OnlineRouteImport } from './routes/online'
-import { Route as JogarRouteImport } from './routes/jogar'
-import { Route as ComoJogarRouteImport } from './routes/como-jogar'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ComoJogarRouteImport } from './routes/como-jogar'
+import { Route as JogarRouteImport } from './routes/jogar'
+import { Route as OnlineRouteImport } from './routes/online'
+import { Route as PartidaRouteImport } from './routes/partida'
+import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as SalaCodeRouteImport } from './routes/sala.$code'
 
-const PerfilRoute = PerfilRouteImport.update({
-  id: '/perfil',
-  path: '/perfil',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PartidaRoute = PartidaRouteImport.update({
-  id: '/partida',
-  path: '/partida',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OnlineRoute = OnlineRouteImport.update({
-  id: '/online',
-  path: '/online',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JogarRoute = JogarRouteImport.update({
-  id: '/jogar',
-  path: '/jogar',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComoJogarRoute = ComoJogarRouteImport.update({
@@ -42,9 +27,24 @@ const ComoJogarRoute = ComoJogarRouteImport.update({
   path: '/como-jogar',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const JogarRoute = JogarRouteImport.update({
+  id: '/jogar',
+  path: '/jogar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnlineRoute = OnlineRouteImport.update({
+  id: '/online',
+  path: '/online',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartidaRoute = PartidaRouteImport.update({
+  id: '/partida',
+  path: '/partida',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PerfilRoute = PerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SalaCodeRoute = SalaCodeRouteImport.update({
@@ -123,32 +123,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/perfil': {
-      id: '/perfil'
-      path: '/perfil'
-      fullPath: '/perfil'
-      preLoaderRoute: typeof PerfilRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/partida': {
-      id: '/partida'
-      path: '/partida'
-      fullPath: '/partida'
-      preLoaderRoute: typeof PartidaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/online': {
-      id: '/online'
-      path: '/online'
-      fullPath: '/online'
-      preLoaderRoute: typeof OnlineRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/jogar': {
-      id: '/jogar'
-      path: '/jogar'
-      fullPath: '/jogar'
-      preLoaderRoute: typeof JogarRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/como-jogar': {
@@ -158,11 +137,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComoJogarRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/jogar': {
+      id: '/jogar'
+      path: '/jogar'
+      fullPath: '/jogar'
+      preLoaderRoute: typeof JogarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/online': {
+      id: '/online'
+      path: '/online'
+      fullPath: '/online'
+      preLoaderRoute: typeof OnlineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partida': {
+      id: '/partida'
+      path: '/partida'
+      fullPath: '/partida'
+      preLoaderRoute: typeof PartidaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/perfil': {
+      id: '/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof PerfilRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sala/$code': {

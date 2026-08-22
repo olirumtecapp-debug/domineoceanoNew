@@ -1,0 +1,1 @@
+function e({className:e,compact:t=!1,label:n=`Jogue no computador`}){return null}export{e as t};
